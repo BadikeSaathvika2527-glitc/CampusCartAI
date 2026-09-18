@@ -1,0 +1,6 @@
+{
+  "name": "CampusCart AI — Intelligent Student Commerce",
+  "description": "Intelligent student e-commerce platform with context-aware AI shopping assistant, budget optimization, custom starter kits, order tracking, and seller management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,2399 @@
+{
+  "users": [
+    {
+      "id": "student-1",
+      "name": "Aarav Sharma",
+      "email": "aarav.cse@campus.edu",
+      "phone": "+91 91234 56780",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
+      "demoWalletBalance": 2500,
+      "profile": {
+        "college": "National Institute of Technology",
+        "course": "B.Tech Computer Science & Eng.",
+        "year": 2,
+        "semester": 3,
+        "hostelStatus": "hostel",
+        "hostelRoom": "Aryabhatta Hostel, Room 314",
+        "budgetPreference": 3500,
+        "preferredCategories": [
+          "cat-cse",
+          "cat-electronics",
+          "cat-hostel"
+        ]
+      },
+      "addresses": [
+        {
+          "id": "addr-1",
+          "label": "Hostel Room",
+          "fullName": "Aarav Sharma",
+          "phone": "+91 91234 56780",
+          "campusName": "NIT Campus",
+          "addressLine1": "Aryabhatta Hostel, 3rd Floor, Room 314",
+          "addressLine2": "Near North Mess",
+          "city": "Bengaluru",
+          "pincode": "560064",
+          "isDefault": true
+        }
+      ]
+    },
+    {
+      "id": "student-2",
+      "name": "Priya Patel",
+      "email": "priya.ece@campus.edu",
+      "phone": "+91 91234 56781",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "demoWalletBalance": 1800,
+      "profile": {
+        "college": "Delhi Technological University",
+        "course": "B.Tech Electronics & Comm.",
+        "year": 1,
+        "semester": 1,
+        "hostelStatus": "hostel",
+        "hostelRoom": "Kalpana Chawla Hall, Room 108",
+        "budgetPreference": 3000
+      },
+      "addresses": [
+        {
+          "id": "addr-2",
+          "label": "Girls Hostel",
+          "fullName": "Priya Patel",
+          "phone": "+91 91234 56781",
+          "campusName": "DTU Main Campus",
+          "addressLine1": "Kalpana Chawla Hostel, Wing B",
+          "city": "New Delhi",
+          "pincode": "110042",
+          "isDefault": true
+        }
+      ]
+    },
+    {
+      "id": "student-3",
+      "name": "Rohan Mehta",
+      "email": "rohan.bca@campus.edu",
+      "phone": "+91 91234 56782",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "demoWalletBalance": 3200,
+      "profile": {
+        "college": "Symbiosis College of Arts & Commerce",
+        "course": "Bachelor of Computer Applications (BCA)",
+        "year": 3,
+        "semester": 5,
+        "hostelStatus": "day_scholar",
+        "budgetPreference": 2000
+      }
+    },
+    {
+      "id": "student-4",
+      "name": "Sneha Rao",
+      "email": "sneha.mba@campus.edu",
+      "phone": "+91 91234 56783",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "demoWalletBalance": 4000,
+      "profile": {
+        "college": "Indian Institute of Management",
+        "course": "MBA General Management",
+        "year": 1,
+        "semester": 2,
+        "hostelStatus": "hostel",
+        "budgetPreference": 5000
+      }
+    },
+    {
+      "id": "student-5",
+      "name": "Kabir Verma",
+      "email": "kabir.mech@campus.edu",
+      "phone": "+91 91234 56784",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+      "demoWalletBalance": 1200,
+      "profile": {
+        "college": "IIT Roorkee",
+        "course": "B.Tech Mechanical Eng.",
+        "year": 4,
+        "semester": 7,
+        "hostelStatus": "hostel",
+        "budgetPreference": 2500
+      }
+    },
+    {
+      "id": "seller-1",
+      "name": "Vikram Joshi",
+      "email": "seller.tech@campuscart.ai",
+      "phone": "+91 98765 43210",
+      "role": "seller",
+      "sellerStoreId": "store-1",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "seller-2",
+      "name": "Meenakshi Iyer",
+      "email": "seller.living@campuscart.ai",
+      "phone": "+91 98765 43211",
+      "role": "seller",
+      "sellerStoreId": "store-2",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "seller-3",
+      "name": "Sunil Aggarwal",
+      "email": "seller.stationery@campuscart.ai",
+      "phone": "+91 98765 43212",
+      "role": "seller",
+      "sellerStoreId": "store-3",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "admin-1",
+      "name": "CampusCart Admin",
+      "email": "campus.admin@campuscart.ai",
+      "phone": "+91 99999 88888",
+      "role": "admin",
+      "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-college",
+      "name": "College Essentials",
+      "slug": "college-essentials",
+      "description": "Notebooks, pens, geometry boxes, calculators & office files",
+      "iconName": "BookOpen",
+      "itemCount": 12
+    },
+    {
+      "id": "cat-hostel",
+      "name": "Hostel Essentials",
+      "slug": "hostel-essentials",
+      "description": "Bedding, buckets, laundry nets, locks & room organizers",
+      "iconName": "Home",
+      "itemCount": 14
+    },
+    {
+      "id": "cat-electronics",
+      "name": "Electronics & Tech",
+      "slug": "electronics",
+      "description": "Wireless mice, keyboards, power banks, USB drives & lamps",
+      "iconName": "Laptop",
+      "itemCount": 12
+    },
+    {
+      "id": "cat-cse",
+      "name": "CSE & Engineering",
+      "slug": "cse-engineering",
+      "description": "Arduino boards, breadboards, sensors, jumper wires & project kits",
+      "iconName": "Cpu",
+      "itemCount": 10
+    },
+    {
+      "id": "cat-care",
+      "name": "Personal Care & Grooming",
+      "slug": "personal-care",
+      "description": "Toiletries, hygiene packs, mirrors & first-aid grooming",
+      "iconName": "Sparkles",
+      "itemCount": 8
+    },
+    {
+      "id": "cat-travel",
+      "name": "Travel & Campus Bags",
+      "slug": "travel",
+      "description": "Water bottles, backpacks, travel pouches & compact umbrellas",
+      "iconName": "Compass",
+      "itemCount": 7
+    },
+    {
+      "id": "cat-fashion",
+      "name": "Campus Fashion & Wear",
+      "slug": "fashion",
+      "description": "College hoodies, comfortable slide footwear & ID lanyards",
+      "iconName": "Shirt",
+      "itemCount": 6
+    },
+    {
+      "id": "cat-gifts",
+      "name": "Gifts & Celebrations",
+      "slug": "gifts",
+      "description": "Farewell mementos, greeting cards, birthday mugs & custom pins",
+      "iconName": "Gift",
+      "itemCount": 5
+    }
+  ],
+  "products": [
+    {
+      "id": "p-stat-notebooks",
+      "name": "Classmate Pulse 6-Subject Spiral Notebook (300 Pages)",
+      "slug": "classmate-pulse-6-subject-notebook",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "Classmate",
+      "price": 180,
+      "originalPrice": 220,
+      "discountPercent": 18,
+      "rating": 4.8,
+      "reviewCount": 420,
+      "stock": 85,
+      "description": "Single-ruled spiral notebook with color-coded dividers, perfect for keeping notes for all college subjects in one lightweight book.",
+      "specs": [
+        {
+          "name": "Pages",
+          "value": "300 pages"
+        },
+        {
+          "name": "Paper Quality",
+          "value": "70 GSM"
+        },
+        {
+          "name": "Binding",
+          "value": "Wiro Spiral"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isExamEssential": true,
+      "isHostelEssential": true,
+      "tags": [
+        "notebook",
+        "stationery",
+        "exam",
+        "notes",
+        "spiral"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-stat-pens",
+      "name": "Reynolds Jetter Classic Ball Pen Set (Pack of 5, Blue)",
+      "slug": "reynolds-jetter-ball-pen-pack-5",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "Reynolds",
+      "price": 120,
+      "originalPrice": 150,
+      "discountPercent": 20,
+      "rating": 4.7,
+      "reviewCount": 310,
+      "stock": 120,
+      "description": "Smooth writing 0.7mm tip pens favored by college students for fast exam writing and continuous lecture notes without smudging.",
+      "specs": [
+        {
+          "name": "Tip Size",
+          "value": "0.7 mm"
+        },
+        {
+          "name": "Ink Color",
+          "value": "Blue"
+        },
+        {
+          "name": "Pack",
+          "value": "5 pens"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isExamEssential": true,
+      "tags": [
+        "pen",
+        "reynolds",
+        "exam",
+        "blue ink",
+        "stationery"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-stat-highlighter",
+      "name": "Stabilo Boss Original Pastel Highlighters (Set of 4)",
+      "slug": "stabilo-boss-pastel-highlighters-4-pack",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "Stabilo",
+      "price": 240,
+      "originalPrice": 300,
+      "discountPercent": 20,
+      "rating": 4.9,
+      "reviewCount": 280,
+      "stock": 45,
+      "description": "Anti-dry out technology pastel highlighters that do not bleed through notebook paper. Essential for exam preparation.",
+      "specs": [
+        {
+          "name": "Colors",
+          "value": "Pastel Mint, Peach, Lavender, Yellow"
+        },
+        {
+          "name": "Line Width",
+          "value": "2mm - 5mm"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1585336261026-8c7604561a38?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isExamEssential": true,
+      "tags": [
+        "highlighter",
+        "stabilo",
+        "study",
+        "pastel",
+        "exam"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-stat-calculator",
+      "name": "Casio FX-991CW ClassWiz Non-Programmable Scientific Calculator",
+      "slug": "casio-fx-991cw-scientific-calculator",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "Casio",
+      "price": 1395,
+      "originalPrice": 1595,
+      "discountPercent": 12,
+      "rating": 4.9,
+      "reviewCount": 650,
+      "stock": 35,
+      "description": "The standard approved scientific calculator for engineering and science university examinations. Features 540+ functions and natural textbook display.",
+      "specs": [
+        {
+          "name": "Display",
+          "value": "High-res Natural Textbook"
+        },
+        {
+          "name": "Power",
+          "value": "Dual (Solar & Battery)"
+        },
+        {
+          "name": "Approved",
+          "value": "University Exam Approved"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1611125832047-1d7ad1e8e4bc?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isExamEssential": true,
+      "isCseEssential": true,
+      "tags": [
+        "calculator",
+        "casio",
+        "engineering",
+        "exam",
+        "scientific"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-stat-stickynotes",
+      "name": "3M Post-it Color Notes & Index Flag Tabs Combo",
+      "slug": "3m-post-it-notes-index-flags-combo",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "3M Post-it",
+      "price": 150,
+      "originalPrice": 190,
+      "discountPercent": 21,
+      "rating": 4.6,
+      "reviewCount": 195,
+      "stock": 60,
+      "description": "Self-adhesive notes with multi-color index flags for bookmarking textbook chapters, lab manuals, and exam syllabus sheets.",
+      "specs": [
+        {
+          "name": "Sheets",
+          "value": "100 note sheets + 80 arrow flags"
+        },
+        {
+          "name": "Adhesive",
+          "value": "Clean removal repositionable"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isExamEssential": true,
+      "tags": [
+        "sticky notes",
+        "postit",
+        "flags",
+        "revision",
+        "exam"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-stat-folder",
+      "name": "Solo Expanding Document File Folder (13 Pockets)",
+      "slug": "solo-expanding-document-file-folder",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "Solo",
+      "price": 260,
+      "originalPrice": 320,
+      "discountPercent": 19,
+      "rating": 4.7,
+      "reviewCount": 140,
+      "stock": 50,
+      "description": "Keep your assignment sheets, marksheets, hall tickets, lab printouts and resume copies neatly organized by semester.",
+      "specs": [
+        {
+          "name": "Pockets",
+          "value": "13 expandable dividers"
+        },
+        {
+          "name": "Size",
+          "value": "A4 / FS"
+        },
+        {
+          "name": "Closure",
+          "value": "Elastic lock cord"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1568667256549-094345857637?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isPresentationEssential": true,
+      "isExamEssential": true,
+      "tags": [
+        "folder",
+        "file",
+        "presentation",
+        "resume",
+        "documents"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-stat-exampad",
+      "name": "Durable Acrylic Clear Exam Clipboard with Ruler Guide",
+      "slug": "acrylic-clear-exam-clipboard",
+      "categoryId": "cat-college",
+      "categoryName": "College Essentials",
+      "brand": "Omega",
+      "price": 130,
+      "originalPrice": 175,
+      "discountPercent": 25,
+      "rating": 4.5,
+      "reviewCount": 110,
+      "stock": 70,
+      "description": "Sturdy transparent exam board strictly compliant with university hall ticket rules requiring see-through stationery.",
+      "specs": [
+        {
+          "name": "Material",
+          "value": "Shatter-resistant Acrylic"
+        },
+        {
+          "name": "Clip",
+          "value": "Rust-proof metal low-profile"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1584697964190-7bb859a9ec2b?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "isExamEssential": true,
+      "tags": [
+        "exampad",
+        "clipboard",
+        "transparent",
+        "exam hall"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-bedsheet",
+      "name": "Bombay Dyeing Pure Cotton Single Bedsheet with Pillow Cover",
+      "slug": "bombay-dyeing-cotton-single-bedsheet",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "Bombay Dyeing",
+      "price": 499,
+      "originalPrice": 799,
+      "discountPercent": 37,
+      "rating": 4.6,
+      "reviewCount": 520,
+      "stock": 40,
+      "description": "Breathable 100% cotton single bedsheet tailored specifically to standard hostel single cots (60 x 90 inches). Crisp, soft and machine-washable.",
+      "specs": [
+        {
+          "name": "Size",
+          "value": "Single Cot (150cm x 225cm)"
+        },
+        {
+          "name": "Material",
+          "value": "100% Cotton, 160 TC"
+        },
+        {
+          "name": "Includes",
+          "value": "1 Bedsheet + 1 Pillow Cover"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "bedsheet",
+        "hostel",
+        "cotton",
+        "single cot",
+        "linens"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-pillow",
+      "name": "Wakefit Hollow Fibre Plush Sleeping Pillow (Medium Soft)",
+      "slug": "wakefit-plush-sleeping-pillow",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "Wakefit",
+      "price": 349,
+      "originalPrice": 599,
+      "discountPercent": 41,
+      "rating": 4.7,
+      "reviewCount": 430,
+      "stock": 55,
+      "description": "Hypoallergenic virgin fibre pillow providing optimal cervical neck support for sound sleep in hostel rooms.",
+      "specs": [
+        {
+          "name": "Dimensions",
+          "value": "17 x 27 inches"
+        },
+        {
+          "name": "Filling",
+          "value": "Recron Hollow Siliconized Fibre"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "pillow",
+        "wakefit",
+        "hostel",
+        "sleep",
+        "bedding"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-lock",
+      "name": "Godrej Nav-Tal 7-Levers Heavy Duty Brass Padlock (3 Keys)",
+      "slug": "godrej-navtal-brass-padlock-7-levers",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "Godrej",
+      "price": 380,
+      "originalPrice": 450,
+      "discountPercent": 15,
+      "rating": 4.9,
+      "reviewCount": 780,
+      "stock": 65,
+      "description": "Indestructible brass padlock for hostel room door, personal wardrobe locker, and luggage safety. Includes 3 computerized brass keys.",
+      "specs": [
+        {
+          "name": "Mechanism",
+          "value": "7-Brass Levers"
+        },
+        {
+          "name": "Shackle",
+          "value": "Hardened Electroplated Steel"
+        },
+        {
+          "name": "Keys",
+          "value": "3 Keys"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1510519138197-060d1d2c5b40?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "lock",
+        "godrej",
+        "hostel",
+        "safety",
+        "locker"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-hangers",
+      "name": "Heavy Duty Plastic Clothes Hangers (Set of 12, Anti-Slip)",
+      "slug": "heavy-duty-plastic-hangers-pack-12",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "Kuber Industries",
+      "price": 180,
+      "originalPrice": 250,
+      "discountPercent": 28,
+      "rating": 4.6,
+      "reviewCount": 310,
+      "stock": 90,
+      "description": "Keep your formal shirts, college t-shirts, lab coats, and pants neat and wrinkle-free in small hostel almirahs.",
+      "specs": [
+        {
+          "name": "Pack Size",
+          "value": "12 Hangers"
+        },
+        {
+          "name": "Features",
+          "value": "Notches for straps & anti-slip bar"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "hangers",
+        "hostel",
+        "almirah",
+        "wardrobe",
+        "clothes"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-bucket",
+      "name": "Cello Heavy Plastic Bathroom Bucket (18L) + Mug (1L) Set",
+      "slug": "cello-bathroom-bucket-18l-mug-set",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "Cello",
+      "price": 320,
+      "originalPrice": 450,
+      "discountPercent": 28,
+      "rating": 4.5,
+      "reviewCount": 220,
+      "stock": 45,
+      "description": "Crack-resistant virgin plastic bathroom bucket with sturdy grip handle and matching 1L bathing mug for hostel common washrooms.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "18 Litres"
+        },
+        {
+          "name": "Material",
+          "value": "Virgin Polypropylene BPA-Free"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "bucket",
+        "bathroom",
+        "hostel",
+        "cello",
+        "bathing"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-laundry",
+      "name": "Foldable Mesh Laundry Hamper Bag with Carry Handles",
+      "slug": "foldable-mesh-laundry-hamper-bag",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "House of Quirk",
+      "price": 199,
+      "originalPrice": 350,
+      "discountPercent": 43,
+      "rating": 4.6,
+      "reviewCount": 390,
+      "stock": 75,
+      "description": "Pop-up ventilated mesh laundry basket prevents odor buildup and collapses completely flat when not in use.",
+      "specs": [
+        {
+          "name": "Dimensions",
+          "value": "36 x 36 x 58 cm"
+        },
+        {
+          "name": "Weight Capacity",
+          "value": "Up to 8 kg laundry"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "laundry",
+        "hostel",
+        "hamper",
+        "clothes",
+        "washing"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-hostel-organizer",
+      "name": "Under-Bed Fabric Storage Bag with Clear View Window",
+      "slug": "under-bed-fabric-storage-bag",
+      "categoryId": "cat-hostel",
+      "categoryName": "Hostel Essentials",
+      "brand": "Kuber Industries",
+      "price": 299,
+      "originalPrice": 499,
+      "discountPercent": 40,
+      "rating": 4.5,
+      "reviewCount": 180,
+      "stock": 40,
+      "description": "Dust-proof zippered moisture-resistant under-bed container for extra blankets, off-season jackets and books.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "65 Litres"
+        },
+        {
+          "name": "Features",
+          "value": "Reinforced dual side handles"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "storage",
+        "hostel",
+        "underbed",
+        "organizer",
+        "box"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-lamp",
+      "name": "Wipro Garnet 6W Rechargeable LED Study Lamp (3 Dimmable Modes)",
+      "slug": "wipro-garnet-rechargeable-led-study-lamp",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "Wipro",
+      "price": 649,
+      "originalPrice": 1190,
+      "discountPercent": 45,
+      "rating": 4.7,
+      "reviewCount": 880,
+      "stock": 50,
+      "description": "Flexible gooseneck desk lamp with touch controls, warm-to-cool light adjustments, and built-in battery for study during hostel power cuts.",
+      "specs": [
+        {
+          "name": "Battery",
+          "value": "1800mAh Li-ion (5-hr backup)"
+        },
+        {
+          "name": "Charging",
+          "value": "Micro-USB / Type-C"
+        },
+        {
+          "name": "Color Temps",
+          "value": "Warm, Cool, Daylight"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "isExamEssential": true,
+      "tags": [
+        "lamp",
+        "study lamp",
+        "wipro",
+        "rechargeable",
+        "night study"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-lamp-budget",
+      "name": "Desidiya Flexible Clip-On USB Book Light & Study Lamp",
+      "slug": "desidiya-clip-on-usb-book-light",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "Desidiya",
+      "price": 299,
+      "originalPrice": 499,
+      "discountPercent": 40,
+      "rating": 4.4,
+      "reviewCount": 210,
+      "stock": 65,
+      "description": "Budget-friendly clip-on light that attaches to headboards, textbooks, or laptops for quiet night reading without waking roommates.",
+      "specs": [
+        {
+          "name": "Power",
+          "value": "USB Powered"
+        },
+        {
+          "name": "Clip Span",
+          "value": "Up to 5 cm"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "lamp",
+        "clip on",
+        "budget light",
+        "hostel",
+        "reading"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-extension",
+      "name": "Anchor by Panasonic 4-Socket Surge Protected Extension Board (2M Cord)",
+      "slug": "anchor-4-socket-surge-extension-board",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "Anchor Panasonic",
+      "price": 399,
+      "originalPrice": 550,
+      "discountPercent": 27,
+      "rating": 4.8,
+      "reviewCount": 620,
+      "stock": 75,
+      "description": "Essential for hostel rooms with limited wall outlets. Safely powers laptop, phone, study lamp, and soldering kit simultaneously with surge protector.",
+      "specs": [
+        {
+          "name": "Sockets",
+          "value": "4 Universal Sockets with Individual Switches"
+        },
+        {
+          "name": "Cord Length",
+          "value": "2 Metres Heavy Duty"
+        },
+        {
+          "name": "Surge Protection",
+          "value": "Thermal trip fuse"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "isCseEssential": true,
+      "tags": [
+        "extension board",
+        "anchor",
+        "plug",
+        "hostel",
+        "charger"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-mouse",
+      "name": "Logitech B170 Wireless Optical Mouse (12-Month Battery)",
+      "slug": "logitech-b170-wireless-mouse",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "Logitech",
+      "price": 599,
+      "originalPrice": 895,
+      "discountPercent": 33,
+      "rating": 4.8,
+      "reviewCount": 1420,
+      "stock": 80,
+      "description": "Reliable 2.4GHz wireless mouse with 10-meter range and comfortable ambidextrous grip. Perfect for daily coding and CAD assignments.",
+      "specs": [
+        {
+          "name": "Connectivity",
+          "value": "2.4GHz Nano USB Receiver"
+        },
+        {
+          "name": "Battery",
+          "value": "1x AA (included, 12 months)"
+        },
+        {
+          "name": "DPI",
+          "value": "1000 DPI Optical"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "mouse",
+        "wireless mouse",
+        "logitech",
+        "laptop",
+        "coding"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-laptopstand",
+      "name": "Foldable Ergonomic Aluminum Laptop Stand (6-Level Height)",
+      "slug": "foldable-aluminum-laptop-stand",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "Portronics",
+      "price": 499,
+      "originalPrice": 999,
+      "discountPercent": 50,
+      "rating": 4.7,
+      "reviewCount": 710,
+      "stock": 55,
+      "description": "Promotes eye-level screen alignment, preventing neck and back fatigue during long assignment deadlines and competitive coding contests.",
+      "specs": [
+        {
+          "name": "Material",
+          "value": "Aviation Aluminum Alloy"
+        },
+        {
+          "name": "Compatibility",
+          "value": "Laptops 10 to 15.6 inches"
+        },
+        {
+          "name": "Portability",
+          "value": "Folds flat with pouch"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "laptop stand",
+        "ergonomic",
+        "aluminum",
+        "coding",
+        "desk"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-pendrive",
+      "name": "SanDisk Ultra Dual Drive Go Type-C & Type-A USB 3.2 (64GB)",
+      "slug": "sandisk-ultra-dual-drive-go-64gb",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "SanDisk",
+      "price": 549,
+      "originalPrice": 850,
+      "discountPercent": 35,
+      "rating": 4.8,
+      "reviewCount": 960,
+      "stock": 70,
+      "description": "2-in-1 flash drive seamlessly transfers project files, slides, and OS images between smartphone, MacBook, and college lab desktops.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "64 GB"
+        },
+        {
+          "name": "Speed",
+          "value": "Up to 150 MB/s Read"
+        },
+        {
+          "name": "Connectors",
+          "value": "USB Type-C + USB Type-A"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1624823183493-5f403986a7d5?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "isPresentationEssential": true,
+      "tags": [
+        "pendrive",
+        "usb drive",
+        "sandisk",
+        "type c",
+        "project"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-usbhub",
+      "name": "TP-Link UH400 4-Port USB 3.0 High-Speed Compact Data Hub",
+      "slug": "tp-link-uh400-4-port-usb-3-hub",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "TP-Link",
+      "price": 699,
+      "originalPrice": 999,
+      "discountPercent": 30,
+      "rating": 4.6,
+      "reviewCount": 340,
+      "stock": 45,
+      "description": "Expands one USB port into four with 5Gbps transfer rates. Safely connect mouse, pendrive, keyboard, and Arduino board simultaneously.",
+      "specs": [
+        {
+          "name": "Ports",
+          "value": "4 x USB 3.0 Ports"
+        },
+        {
+          "name": "Speed",
+          "value": "5 Gbps"
+        },
+        {
+          "name": "Design",
+          "value": "Foldable cable design"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1544652478-6653e09f18a2?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "usb hub",
+        "ports",
+        "coding",
+        "tp-link",
+        "electronics"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-powerbank",
+      "name": "Mi 10,000mAh 22.5W Fast Charging Ultra Compact Power Bank 3i",
+      "slug": "mi-10000mah-22-5w-powerbank-3i",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "Xiaomi",
+      "price": 999,
+      "originalPrice": 1499,
+      "discountPercent": 33,
+      "rating": 4.8,
+      "reviewCount": 1890,
+      "stock": 40,
+      "description": "High-capacity dual input/triple output power bank supporting Power Delivery & Quick Charge 3.0 for college trips and long day lectures.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "10,000 mAh Li-Polymer"
+        },
+        {
+          "name": "Max Output",
+          "value": "22.5W Fast Charging"
+        },
+        {
+          "name": "Outputs",
+          "value": "2 x USB-A + 1 x Type-C"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1609592424368-203534b17935?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isTripEssential": true,
+      "tags": [
+        "powerbank",
+        "charger",
+        "battery",
+        "travel",
+        "mi"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-elec-earphones",
+      "name": "boAt Bassheads 242 Wired Sports Earphones with Mic",
+      "slug": "boat-bassheads-242-wired-earphones",
+      "categoryId": "cat-electronics",
+      "categoryName": "Electronics & Tech",
+      "brand": "boAt",
+      "price": 399,
+      "originalPrice": 699,
+      "discountPercent": 43,
+      "rating": 4.5,
+      "reviewCount": 880,
+      "stock": 65,
+      "description": "Tangle-free cable with in-line microphone for attending online lectures, viva preparation, and listening to focus music in the library.",
+      "specs": [
+        {
+          "name": "Jack",
+          "value": "3.5mm Gold-Plated"
+        },
+        {
+          "name": "Driver",
+          "value": "10mm Dynamic Drivers"
+        },
+        {
+          "name": "Water Resistance",
+          "value": "IPX4"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "tags": [
+        "earphones",
+        "headphones",
+        "mic",
+        "boat",
+        "study"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-cse-arduino",
+      "name": "Arduino Uno R3 Compatible Board (ATmega328P with USB Cable)",
+      "slug": "arduino-uno-r3-compatible-board",
+      "categoryId": "cat-cse",
+      "categoryName": "CSE & Engineering",
+      "brand": "Robocraze",
+      "price": 499,
+      "originalPrice": 750,
+      "discountPercent": 33,
+      "rating": 4.8,
+      "reviewCount": 540,
+      "stock": 50,
+      "description": "Standard micro-controller development board for semester IoT projects, embedded systems labs, and robotics prototypes. Includes USB programmer cable.",
+      "specs": [
+        {
+          "name": "Microcontroller",
+          "value": "ATmega328P"
+        },
+        {
+          "name": "Operating Voltage",
+          "value": "5V"
+        },
+        {
+          "name": "Digital I/O Pins",
+          "value": "14 (6 PWM outputs)"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1553406830-ef2513450d76?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "arduino",
+        "iot",
+        "hardware",
+        "cse",
+        "engineering",
+        "microcontroller"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-cse-breadboard",
+      "name": "MB-102 830-Point Solderless Breadboard for Circuit Prototyping",
+      "slug": "mb102-830-point-solderless-breadboard",
+      "categoryId": "cat-cse",
+      "categoryName": "CSE & Engineering",
+      "brand": "Robocraze",
+      "price": 160,
+      "originalPrice": 220,
+      "discountPercent": 27,
+      "rating": 4.6,
+      "reviewCount": 310,
+      "stock": 80,
+      "description": "High-precision breadboard with power rails and numbered tie-points. Indispensable for circuit lab experiments and rapid sensor testing.",
+      "specs": [
+        {
+          "name": "Tie Points",
+          "value": "830 Points (630 terminal + 200 distribution)"
+        },
+        {
+          "name": "Base",
+          "value": "Self-adhesive sticky tape back"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1517055729445-fa7d27394b48?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "breadboard",
+        "circuit",
+        "engineering",
+        "lab",
+        "cse"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-cse-jumpers",
+      "name": "Multicolor Jumper Wires Bundle (120 Pieces: M-M, M-F, F-F 20cm)",
+      "slug": "multicolor-jumper-wires-bundle-120-pcs",
+      "categoryId": "cat-cse",
+      "categoryName": "CSE & Engineering",
+      "brand": "Robocraze",
+      "price": 199,
+      "originalPrice": 300,
+      "discountPercent": 34,
+      "rating": 4.7,
+      "reviewCount": 410,
+      "stock": 95,
+      "description": "40x Male-to-Male, 40x Male-to-Female, and 40x Female-to-Female flexible ribbon jumper cables for breadboard and Raspberry Pi / Arduino pins.",
+      "specs": [
+        {
+          "name": "Count",
+          "value": "120 wires total (40 of each type)"
+        },
+        {
+          "name": "Length",
+          "value": "20 cm"
+        },
+        {
+          "name": "Pitch",
+          "value": "Standard 2.54mm"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "jumper wires",
+        "arduino",
+        "wires",
+        "engineering",
+        "breadboard"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-cse-sensors",
+      "name": "37-in-1 Sensor Modules Kit for Arduino & Raspberry Pi IoT Lab",
+      "slug": "37-in-1-sensor-modules-kit-arduino",
+      "categoryId": "cat-cse",
+      "categoryName": "CSE & Engineering",
+      "brand": "Elegoo",
+      "price": 899,
+      "originalPrice": 1350,
+      "discountPercent": 33,
+      "rating": 4.8,
+      "reviewCount": 290,
+      "stock": 30,
+      "description": "Comprehensive sensor module set including Ultrasonic HC-SR04, DHT11 Temperature & Humidity, IR Obstacle, PIR Motion, Sound, and Flame sensors.",
+      "specs": [
+        {
+          "name": "Modules Included",
+          "value": "37 popular sensor breakout modules"
+        },
+        {
+          "name": "Packaging",
+          "value": "Compartmentalized plastic organizer box"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "sensors",
+        "arduino",
+        "iot",
+        "cse project",
+        "ultrasonic"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-cse-esp32",
+      "name": "ESP32 NodeMCU WiFi + Bluetooth CP2102 IoT Development Board",
+      "slug": "esp32-nodemcu-wifi-bluetooth-board",
+      "categoryId": "cat-cse",
+      "categoryName": "CSE & Engineering",
+      "brand": "Espressif",
+      "price": 420,
+      "originalPrice": 650,
+      "discountPercent": 35,
+      "rating": 4.9,
+      "reviewCount": 380,
+      "stock": 45,
+      "description": "Dual-core 240MHz microcontroller with built-in Wi-Fi and Bluetooth LE. Ideal for smart home automation and cloud-connected student capstone projects.",
+      "specs": [
+        {
+          "name": "Processor",
+          "value": "Tensilica Xtensa Dual-Core 32-bit LX6"
+        },
+        {
+          "name": "Wireless",
+          "value": "Wi-Fi 802.11 b/g/n + BLE 4.2"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1563770660941-20978e870e26?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "esp32",
+        "wifi",
+        "bluetooth",
+        "iot",
+        "engineering"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-cse-multimeter",
+      "name": "Digital LCD Multimeter with Probe Leads & Transistor Tester",
+      "slug": "digital-lcd-multimeter-probes",
+      "categoryId": "cat-cse",
+      "categoryName": "CSE & Engineering",
+      "brand": "Mastech",
+      "price": 349,
+      "originalPrice": 499,
+      "discountPercent": 30,
+      "rating": 4.6,
+      "reviewCount": 215,
+      "stock": 35,
+      "description": "Measure AC/DC voltage, DC current, resistance, diode test and continuity beeper for electronic lab testing and troubleshooting.",
+      "specs": [
+        {
+          "name": "Display",
+          "value": "1999 Count LCD"
+        },
+        {
+          "name": "Safety",
+          "value": "Overload protection on all ranges"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isCseEssential": true,
+      "tags": [
+        "multimeter",
+        "circuit",
+        "testing",
+        "hardware",
+        "lab"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-care-toiletrykit",
+      "name": "Waterproof Hanging College Toiletry Organizer Kit Bag",
+      "slug": "waterproof-hanging-toiletry-organizer",
+      "categoryId": "cat-care",
+      "categoryName": "Personal Care & Grooming",
+      "brand": "House of Quirk",
+      "price": 349,
+      "originalPrice": 599,
+      "discountPercent": 41,
+      "rating": 4.7,
+      "reviewCount": 380,
+      "stock": 55,
+      "description": "Compact hanging bag with transparent zippered pockets for toothbrush, paste, face wash, shampoo bottles, and shaving kit in hostel shared baths.",
+      "specs": [
+        {
+          "name": "Material",
+          "value": "Water-resistant Oxford Polyester"
+        },
+        {
+          "name": "Feature",
+          "value": "360° Metal Swivel Hanging Hook"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "isTripEssential": true,
+      "tags": [
+        "toiletry",
+        "pouch",
+        "hostel",
+        "grooming",
+        "washroom"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-care-towel",
+      "name": "Bombay Dyeing Quick-Dry Microfiber Bath Towel (Large 75x150cm)",
+      "slug": "bombay-dyeing-quick-dry-bath-towel",
+      "categoryId": "cat-care",
+      "categoryName": "Personal Care & Grooming",
+      "brand": "Bombay Dyeing",
+      "price": 399,
+      "originalPrice": 650,
+      "discountPercent": 38,
+      "rating": 4.6,
+      "reviewCount": 440,
+      "stock": 60,
+      "description": "Dries 3x faster than standard cotton towels, ideal for hostel rooms with limited clothesline drying space and rainy seasons.",
+      "specs": [
+        {
+          "name": "Dimensions",
+          "value": "75 cm x 150 cm"
+        },
+        {
+          "name": "Absorption",
+          "value": "Holds 4x its weight in water"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "isTripEssential": true,
+      "tags": [
+        "towel",
+        "quick dry",
+        "bath",
+        "hostel",
+        "hygiene"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-care-hygienepack",
+      "name": "Dettol Essential Hygiene Combo (Antiseptic 250ml + Handwash 200ml + Soap x2)",
+      "slug": "dettol-essential-hygiene-hostel-combo",
+      "categoryId": "cat-care",
+      "categoryName": "Personal Care & Grooming",
+      "brand": "Dettol",
+      "price": 249,
+      "originalPrice": 295,
+      "discountPercent": 15,
+      "rating": 4.8,
+      "reviewCount": 310,
+      "stock": 75,
+      "description": "Complete hygiene starter kit for college hostel students to protect against germs, seasonal flu, and dorm infections.",
+      "specs": [
+        {
+          "name": "Package",
+          "value": "Liquid Antiseptic + Pump Handwash + 2 Soaps"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "dettol",
+        "hygiene",
+        "antiseptic",
+        "soap",
+        "hostel care"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-care-firstaid",
+      "name": "Campus Care Compact First Aid & Medicine Pouch (30 Items Included)",
+      "slug": "campus-care-compact-first-aid-kit",
+      "categoryId": "cat-care",
+      "categoryName": "Personal Care & Grooming",
+      "brand": "Cipla Med",
+      "price": 280,
+      "originalPrice": 380,
+      "discountPercent": 26,
+      "rating": 4.8,
+      "reviewCount": 190,
+      "stock": 50,
+      "description": "Band-aids, burn cream, antiseptic wipes, cotton roll, micropore tape, pain balm, and blister relief packed in an emergency red case.",
+      "specs": [
+        {
+          "name": "Contents",
+          "value": "Bandages, Antiseptic cream, Ointments, Gauze"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "isTripEssential": true,
+      "tags": [
+        "first aid",
+        "medicine",
+        "hostel emergency",
+        "bandages"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-travel-backpack",
+      "name": "Skybags Bravo 30L Water Resistant College Backpack with Rain Cover",
+      "slug": "skybags-bravo-30l-college-backpack",
+      "categoryId": "cat-travel",
+      "categoryName": "Travel & Campus Bags",
+      "brand": "Skybags",
+      "price": 1199,
+      "originalPrice": 1999,
+      "discountPercent": 40,
+      "rating": 4.7,
+      "reviewCount": 890,
+      "stock": 45,
+      "description": "3 spacious compartments with dedicated padded laptop sleeve (up to 15.6 inch), bottle holder, secret back pocket and rain cover.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "30 Litres"
+        },
+        {
+          "name": "Fabric",
+          "value": "Heavy Duty 600D Polyester"
+        },
+        {
+          "name": "Rain Cover",
+          "value": "Integrated bottom pouch"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isTripEssential": true,
+      "tags": [
+        "backpack",
+        "bag",
+        "skybags",
+        "laptop bag",
+        "travel"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-travel-bottle",
+      "name": "Milton Thermosteel Flip Lid Insulated Water Bottle (750ml, 24-hr Cold/Hot)",
+      "slug": "milton-thermosteel-water-bottle-750ml",
+      "categoryId": "cat-travel",
+      "categoryName": "Travel & Campus Bags",
+      "brand": "Milton",
+      "price": 549,
+      "originalPrice": 799,
+      "discountPercent": 31,
+      "rating": 4.8,
+      "reviewCount": 1120,
+      "stock": 65,
+      "description": "Double-walled vacuum insulated stainless steel flask. Keeps drinking water chilled during hot summer lectures and warm during winter exam sessions.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "750 ml"
+        },
+        {
+          "name": "Insulation",
+          "value": "24 Hours Hot / Cold"
+        },
+        {
+          "name": "Material",
+          "value": "SS 304 Food Grade Steel"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "isTripEssential": true,
+      "isExamEssential": true,
+      "tags": [
+        "bottle",
+        "milton",
+        "flask",
+        "water bottle",
+        "hydration"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-travel-umbrella",
+      "name": "Auto-Open Windproof 3-Fold Compact Capsule Umbrella",
+      "slug": "auto-open-windproof-compact-umbrella",
+      "categoryId": "cat-travel",
+      "categoryName": "Travel & Campus Bags",
+      "brand": "Destinio",
+      "price": 399,
+      "originalPrice": 699,
+      "discountPercent": 42,
+      "rating": 4.5,
+      "reviewCount": 310,
+      "stock": 55,
+      "description": "Reinforced 8-rib fiberglass frame withstands strong campus winds. One-touch auto open/close button fits effortlessly in backpack side pockets.",
+      "specs": [
+        {
+          "name": "Folded Length",
+          "value": "28 cm"
+        },
+        {
+          "name": "Canopy",
+          "value": "210T Teflon Waterproof Coated"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isTripEssential": true,
+      "tags": [
+        "umbrella",
+        "rain",
+        "travel",
+        "windproof",
+        "compact"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-travel-pouch",
+      "name": "Travel Cable & Charger Organizer Pouch (Double Layer)",
+      "slug": "travel-cable-charger-organizer-pouch",
+      "categoryId": "cat-travel",
+      "categoryName": "Travel & Campus Bags",
+      "brand": "Bagsmart",
+      "price": 299,
+      "originalPrice": 499,
+      "discountPercent": 40,
+      "rating": 4.7,
+      "reviewCount": 240,
+      "stock": 60,
+      "description": "No more tangled cords in your backpack! Neatly stores power bank, smartphone adapter, USB cords, pen drives, and earphones.",
+      "specs": [
+        {
+          "name": "Compartments",
+          "value": "2 Zippered tiers with elastic loops"
+        },
+        {
+          "name": "Water Resistant",
+          "value": "Yes"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-1",
+      "storeName": "Campus Tech Hub",
+      "deliveryDays": 1,
+      "isTripEssential": true,
+      "isCseEssential": true,
+      "tags": [
+        "pouch",
+        "charger organizer",
+        "cables",
+        "travel",
+        "accessories"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-fash-hoodie",
+      "name": "Unisex Oversized College Fleece Pullover Hoodie",
+      "slug": "unisex-oversized-college-pullover-hoodie",
+      "categoryId": "cat-fashion",
+      "categoryName": "Campus Fashion & Wear",
+      "brand": "Campus Originals",
+      "price": 799,
+      "originalPrice": 1499,
+      "discountPercent": 46,
+      "rating": 4.7,
+      "reviewCount": 510,
+      "stock": 35,
+      "description": "Cozy 320 GSM brushed cotton fleece hoodie with kangaroo pocket. Ideal for late-night hostel study sessions and early 8 AM winter lectures.",
+      "specs": [
+        {
+          "name": "Material",
+          "value": "80% Cotton / 20% Poly-Fleece"
+        },
+        {
+          "name": "Fit",
+          "value": "Comfort Relaxed Fit"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "tags": [
+        "hoodie",
+        "sweatshirt",
+        "winter",
+        "campus wear",
+        "college"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-fash-slides",
+      "name": "Waterproof Quick-Dry Anti-Skid Hostel Bathroom Slides",
+      "slug": "anti-skid-hostel-bathroom-slides",
+      "categoryId": "cat-fashion",
+      "categoryName": "Campus Fashion & Wear",
+      "brand": "Sparx",
+      "price": 299,
+      "originalPrice": 450,
+      "discountPercent": 33,
+      "rating": 4.6,
+      "reviewCount": 420,
+      "stock": 70,
+      "description": "Cushioned EVA foam flip-flop slides with drainage holes. Prevents slips in wet hostel washrooms and comfortable for walking to campus mess.",
+      "specs": [
+        {
+          "name": "Sole",
+          "value": "High Grip Anti-Slip Grooved EVA"
+        },
+        {
+          "name": "Weight",
+          "value": "Ultra-lightweight 180g"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "slides",
+        "slippers",
+        "hostel",
+        "bathroom",
+        "sparx"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-gift-mug",
+      "name": "Custom Ceramic Student Quote Coffee Mug (\"Eat. Sleep. Code. Repeat\")",
+      "slug": "eat-sleep-code-repeat-ceramic-mug",
+      "categoryId": "cat-gifts",
+      "categoryName": "Gifts & Celebrations",
+      "brand": "PrintMe",
+      "price": 199,
+      "originalPrice": 350,
+      "discountPercent": 43,
+      "rating": 4.8,
+      "reviewCount": 230,
+      "stock": 45,
+      "description": "350ml microwave and dishwasher-safe ceramic mug. A fun gift for hostel roommates, project partners, and birthdays.",
+      "specs": [
+        {
+          "name": "Capacity",
+          "value": "350 ml"
+        },
+        {
+          "name": "Material",
+          "value": "High Gloss Ceramic"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-3",
+      "storeName": "Campus Stationery & Books",
+      "deliveryDays": 1,
+      "tags": [
+        "mug",
+        "gift",
+        "coffee",
+        "birthday",
+        "roommate"
+      ],
+      "isActive": true
+    },
+    {
+      "id": "p-gift-fairy",
+      "name": "Warm White LED Photo Clip Fairy Lights (16 Clips, 3M Battery Powered)",
+      "slug": "warm-white-led-photo-clip-fairy-lights",
+      "categoryId": "cat-gifts",
+      "categoryName": "Gifts & Celebrations",
+      "brand": "Desidiya",
+      "price": 199,
+      "originalPrice": 399,
+      "discountPercent": 50,
+      "rating": 4.7,
+      "reviewCount": 310,
+      "stock": 50,
+      "description": "Turn your dull hostel wall into an aesthetic photo gallery of family and college squad memories.",
+      "specs": [
+        {
+          "name": "Length",
+          "value": "3 Metres"
+        },
+        {
+          "name": "Clips",
+          "value": "16 Transparent Photo Clips"
+        },
+        {
+          "name": "Power",
+          "value": "3x AA Battery Operated"
+        }
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1512909006721-3d6018887383?w=600&auto=format&fit=crop&q=80",
+      "sellerId": "seller-2",
+      "storeName": "Student Living & Bedding",
+      "deliveryDays": 1,
+      "isHostelEssential": true,
+      "tags": [
+        "fairy lights",
+        "decor",
+        "hostel room",
+        "lights",
+        "aesthetic"
+      ],
+      "isActive": true
+    }
+  ],
+  "stores": [
+    {
+      "id": "store-1",
+      "sellerId": "seller-1",
+      "name": "Campus Tech Hub",
+      "description": "Verified electronics & engineering lab supplies for college students",
+      "rating": 4.8,
+      "totalSales": 3420,
+      "isApproved": true,
+      "contactEmail": "campustech@campuscart.ai",
+      "phone": "+91 98765 43210",
+      "campusLocation": "Tech Tower Basement, Student Plaza"
+    },
+    {
+      "id": "store-2",
+      "sellerId": "seller-2",
+      "name": "Student Living & Bedding",
+      "description": "Quality hostel linens, room decor, storage & hygiene essentials",
+      "rating": 4.7,
+      "totalSales": 2180,
+      "isApproved": true,
+      "contactEmail": "living@campuscart.ai",
+      "phone": "+91 98765 43211",
+      "campusLocation": "Hostel Gate 2 Market"
+    },
+    {
+      "id": "store-3",
+      "sellerId": "seller-3",
+      "name": "Campus Stationery & Books",
+      "description": "Curated exam stationery, project files, highlighters and calculators",
+      "rating": 4.9,
+      "totalSales": 5120,
+      "isApproved": true,
+      "contactEmail": "stationery@campuscart.ai",
+      "phone": "+91 98765 43212",
+      "campusLocation": "Central Library Block A"
+    }
+  ],
+  "studentKits": [
+    {
+      "id": "kit-hostel",
+      "title": "Hostel Starter Kit",
+      "slug": "hostel-starter-kit",
+      "context": "hostel_student",
+      "tagline": "Everything you need to survive & thrive in college hostel",
+      "description": "Bedsheet, ergonomic pillow, heavy duty lock, study lamp, extension board, laundry bag & hangers curated for college hostel rooms.",
+      "estimatedPrice": 3200,
+      "discountedPrice": 2499,
+      "badge": "Best Seller for Freshers",
+      "iconName": "Home",
+      "itemIds": [
+        {
+          "productId": "p-hostel-bedsheet",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-hostel-pillow",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-hostel-lock",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-hostel-hangers",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-elec-lamp",
+          "quantity": 1,
+          "isCore": false
+        },
+        {
+          "productId": "p-elec-extension",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-hostel-laundry",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-care-toiletrykit",
+          "quantity": 1,
+          "isCore": false
+        }
+      ]
+    },
+    {
+      "id": "kit-exam",
+      "title": "Exam Essentials Kit",
+      "slug": "exam-essentials-kit",
+      "context": "exam_preparation",
+      "tagline": "Conquer your semester exams with zero distractions",
+      "description": "Classmate notebooks, Reynolds ball pens, mild highlighters, Casio scientific calculator, sticky tabs and clear exam pad.",
+      "estimatedPrice": 1450,
+      "discountedPrice": 1199,
+      "badge": "Semester Exam Special",
+      "iconName": "BookOpen",
+      "itemIds": [
+        {
+          "productId": "p-stat-notebooks",
+          "quantity": 2,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-pens",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-highlighter",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-calculator",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-stickynotes",
+          "quantity": 1,
+          "isCore": false
+        },
+        {
+          "productId": "p-stat-folder",
+          "quantity": 1,
+          "isCore": false
+        }
+      ]
+    },
+    {
+      "id": "kit-cse",
+      "title": "Coding & CSE Launch Kit",
+      "slug": "coding-cse-kit",
+      "context": "cse_lab_project",
+      "tagline": "Ergonomic & reliable dev gear for long programming sessions",
+      "description": "Aluminum laptop stand, Logitech wireless mouse, 64GB ultra USB drive, 4-port USB 3.0 hub and braided type-C cable.",
+      "estimatedPrice": 2450,
+      "discountedPrice": 1999,
+      "badge": "Engineers Choice",
+      "iconName": "Cpu",
+      "itemIds": [
+        {
+          "productId": "p-elec-laptopstand",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-elec-mouse",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-elec-pendrive",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-elec-usbhub",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-notebooks",
+          "quantity": 1,
+          "isCore": false
+        }
+      ]
+    },
+    {
+      "id": "kit-project",
+      "title": "Hardware & IoT Project Kit",
+      "slug": "engineering-project-kit",
+      "context": "project_development",
+      "tagline": "Lab exam & capstone project components ready in 1 box",
+      "description": "Arduino Uno R3 board, solderless breadboard, 65pcs jumper wires, basic sensor module pack and mini wire cutter.",
+      "estimatedPrice": 1850,
+      "discountedPrice": 1449,
+      "badge": "Hardware Verified",
+      "iconName": "Wrench",
+      "itemIds": [
+        {
+          "productId": "p-cse-arduino",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-cse-breadboard",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-cse-jumpers",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-cse-sensors",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-folder",
+          "quantity": 1,
+          "isCore": false
+        }
+      ]
+    },
+    {
+      "id": "kit-presentation",
+      "title": "College Presentation Kit",
+      "slug": "college-presentation-kit",
+      "context": "college_presentation",
+      "tagline": "Make your seminar or defense smooth, sharp & professional",
+      "description": "Wireless wireless laser presenter, executive document folder, Parker rollerball pen, and SanDisk Type-C OTG flash drive.",
+      "estimatedPrice": 1250,
+      "discountedPrice": 899,
+      "badge": "Under ₹1,000",
+      "iconName": "Presentation",
+      "itemIds": [
+        {
+          "productId": "p-elec-pendrive",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-folder",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-pens",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-stat-stickynotes",
+          "quantity": 1,
+          "isCore": true
+        }
+      ]
+    },
+    {
+      "id": "kit-trip",
+      "title": "College 3-Day Trip Pack",
+      "slug": "college-trip-pack",
+      "context": "college_trip",
+      "tagline": "Travel-ready lightweight gear for industrial visits & weekend trips",
+      "description": "Lightweight water-resistant backpack, stainless steel thermal bottle, 10,000mAh power bank, travel toiletry pouch & compact umbrella.",
+      "estimatedPrice": 2800,
+      "discountedPrice": 2199,
+      "badge": "Travel Ready",
+      "iconName": "Compass",
+      "itemIds": [
+        {
+          "productId": "p-travel-backpack",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-travel-bottle",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-elec-powerbank",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-travel-pouch",
+          "quantity": 1,
+          "isCore": true
+        },
+        {
+          "productId": "p-travel-umbrella",
+          "quantity": 1,
+          "isCore": false
+        }
+      ]
+    }
+  ],
+  "coupons": [
+    {
+      "code": "STUDENT50",
+      "discountType": "fixed",
+      "discountAmount": 50,
+      "minOrder": 299,
+      "description": "Flat ₹50 OFF for all students on orders over ₹299",
+      "isActive": true,
+      "expiryDate": "2026-12-31"
+    },
+    {
+      "code": "WELCOME100",
+      "discountType": "fixed",
+      "discountAmount": 100,
+      "minOrder": 599,
+      "description": "Welcome ₹100 OFF on your first campus order above ₹599",
+      "isActive": true,
+      "expiryDate": "2026-12-31"
+    },
+    {
+      "code": "CAMPUS10",
+      "discountType": "percentage",
+      "discountAmount": 10,
+      "minOrder": 499,
+      "maxDiscount": 250,
+      "description": "10% OFF on all campus orders up to ₹250",
+      "isActive": true,
+      "expiryDate": "2026-12-31"
+    },
+    {
+      "code": "EXAM50",
+      "discountType": "fixed",
+      "discountAmount": 50,
+      "minOrder": 350,
+      "description": "Flat ₹50 OFF on Exam Stationery & Study Supplies",
+      "isActive": true,
+      "expiryDate": "2026-12-31"
+    },
+    {
+      "code": "HOSTEL100",
+      "discountType": "fixed",
+      "discountAmount": 100,
+      "minOrder": 999,
+      "description": "Flat ₹100 OFF on Hostel Starter & Living Bundles",
+      "isActive": true,
+      "expiryDate": "2026-12-31"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-1001",
+      "orderNumber": "CC-2026-1001",
+      "userId": "student-1",
+      "customerName": "Aarav Sharma",
+      "customerEmail": "aarav.cse@campus.edu",
+      "customerPhone": "+91 91234 56780",
+      "items": [
+        {
+          "productId": "p-stat-notebooks",
+          "productName": "Classmate Pulse 6-Subject Spiral Notebook (300 Pages)",
+          "price": 180,
+          "quantity": 2,
+          "imageUrl": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80",
+          "sellerId": "seller-3",
+          "storeName": "Campus Stationery & Books"
+        },
+        {
+          "productId": "p-stat-pens",
+          "productName": "Reynolds Jetter Classic Ball Pen Set (Pack of 5, Blue)",
+          "price": 120,
+          "quantity": 1,
+          "imageUrl": "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=600&auto=format&fit=crop&q=80",
+          "sellerId": "seller-3",
+          "storeName": "Campus Stationery & Books"
+        }
+      ],
+      "shippingAddress": {
+        "id": "addr-1",
+        "label": "Hostel Room",
+        "fullName": "Aarav Sharma",
+        "phone": "+91 91234 56780",
+        "campusName": "NIT Campus",
+        "addressLine1": "Aryabhatta Hostel, 3rd Floor, Room 314",
+        "city": "Bengaluru",
+        "pincode": "560064",
+        "isDefault": true
+      },
+      "deliveryOption": "standard",
+      "paymentMethod": "upi",
+      "paymentStatus": "paid",
+      "orderStatus": "delivered",
+      "subtotal": 480,
+      "discount": 50,
+      "deliveryFee": 0,
+      "total": 430,
+      "couponCode": "STUDENT50",
+      "createdAt": "2026-09-15T04:24:13.647Z",
+      "updatedAt": "2026-09-17T04:24:13.648Z",
+      "estimatedDelivery": "Delivered",
+      "trackingHistory": [
+        {
+          "status": "placed",
+          "timestamp": "2026-09-15T04:24:13.648Z",
+          "message": "Order placed by student"
+        },
+        {
+          "status": "confirmed",
+          "timestamp": "2026-09-15T09:12:13.648Z",
+          "message": "Store confirmed order"
+        },
+        {
+          "status": "packed",
+          "timestamp": "2026-09-16T04:24:13.648Z",
+          "message": "Order packed at Campus Stationery & Books"
+        },
+        {
+          "status": "out_for_delivery",
+          "timestamp": "2026-09-16T23:36:13.648Z",
+          "message": "Out for hostel gate drop"
+        },
+        {
+          "status": "delivered",
+          "timestamp": "2026-09-17T04:24:13.648Z",
+          "message": "Delivered to Aryabhatta Hostel"
+        }
+      ]
+    },
+    {
+      "id": "ord-1002",
+      "orderNumber": "CC-2026-1002",
+      "userId": "student-2",
+      "customerName": "Priya Patel",
+      "customerEmail": "priya.ece@campus.edu",
+      "customerPhone": "+91 91234 56781",
+      "items": [
+        {
+          "productId": "p-hostel-bedsheet",
+          "productName": "Bombay Dyeing Pure Cotton Single Bedsheet with Pillow Cover",
+          "price": 499,
+          "quantity": 1,
+          "imageUrl": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=600&auto=format&fit=crop&q=80",
+          "sellerId": "seller-2",
+          "storeName": "Student Living & Bedding"
+        },
+        {
+          "productId": "p-hostel-lock",
+          "productName": "Godrej Nav-Tal 7-Levers Heavy Duty Brass Padlock (3 Keys)",
+          "price": 380,
+          "quantity": 1,
+          "imageUrl": "https://images.unsplash.com/photo-1510519138197-060d1d2c5b40?w=600&auto=format&fit=crop&q=80",
+          "sellerId": "seller-2",
+          "storeName": "Student Living & Bedding"
+        },
+        {
+          "productId": "p-elec-lamp",
+          "productName": "Wipro Garnet 6W Rechargeable LED Study Lamp",
+          "price": 649,
+          "quantity": 1,
+          "imageUrl": "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=600&auto=format&fit=crop&q=80",
+          "sellerId": "seller-1",
+          "storeName": "Campus Tech Hub"
+        }
+      ],
+      "shippingAddress": {
+        "id": "addr-2",
+        "label": "Girls Hostel",
+        "fullName": "Priya Patel",
+        "phone": "+91 91234 56781",
+        "campusName": "DTU Main Campus",
+        "addressLine1": "Kalpana Chawla Hostel, Wing B, Room 108",
+        "city": "New Delhi",
+        "pincode": "110042",
+        "isDefault": true
+      },
+      "deliveryOption": "express",
+      "paymentMethod": "demo_wallet",
+      "paymentStatus": "paid",
+      "orderStatus": "packed",
+      "subtotal": 1528,
+      "discount": 100,
+      "deliveryFee": 49,
+      "total": 1477,
+      "couponCode": "WELCOME100",
+      "createdAt": "2026-09-18T00:24:13.648Z",
+      "updatedAt": "2026-09-18T04:29:44.094Z",
+      "estimatedDelivery": "Today by 7:00 PM",
+      "trackingHistory": [
+        {
+          "status": "placed",
+          "timestamp": "2026-09-18T00:24:13.648Z",
+          "message": "Order placed with Demo Wallet"
+        },
+        {
+          "status": "confirmed",
+          "timestamp": "2026-09-18T00:54:13.648Z",
+          "message": "Order confirmed by Campus Sellers"
+        },
+        {
+          "status": "preparing",
+          "timestamp": "2026-09-18T02:24:13.648Z",
+          "message": "Items being gathered for packaging"
+        },
+        {
+          "status": "packed",
+          "timestamp": "2026-09-18T04:29:44.094Z",
+          "message": "Package sealed and dispatched to campus logistics"
+        }
+      ]
+    }
+  ],
+  "carts": {
+    "student-1": []
+  },
+  "wishlists": {
+    "student-1": [
+      "p-elec-laptopstand",
+      "p-cse-arduino"
+    ]
+  },
+  "notifications": [
+    {
+      "userId": "student-2",
+      "title": "Order Update: CC-2026-1002",
+      "message": "Package sealed and dispatched to campus logistics",
+      "type": "order",
+      "link": "/orders/ord-1002",
+      "id": "notif-mu6gm526g66",
+      "createdAt": "2026-09-18T04:29:44.094Z",
+      "isRead": false
+    },
+    {
+      "id": "notif-1",
+      "userId": "student-1",
+      "title": "Welcome to CampusCart AI!",
+      "message": "Try telling our AI assistant: \"Hostel essentials under ₹3,000\" or \"Exam stationery under ₹500\".",
+      "type": "ai",
+      "isRead": false,
+      "createdAt": "2026-09-18T04:24:13.648Z"
+    },
+    {
+      "id": "notif-2",
+      "userId": "student-1",
+      "title": "Order CC-2026-1001 Delivered",
+      "message": "Your exam stationery was delivered to Aryabhatta Hostel.",
+      "type": "order",
+      "link": "/orders/ord-1001",
+      "isRead": true,
+      "createdAt": "2026-09-17T04:24:13.648Z"
+    }
+  ]
+}
