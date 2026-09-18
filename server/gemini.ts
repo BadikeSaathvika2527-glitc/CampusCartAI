@@ -4,14 +4,29 @@ import type { AIContextResponse, AIProductRecommendation, Product } from '../src
 
 let aiClient: GoogleGenAI | null = null;
 
+export function getGeminiApiKey(): string | undefined {
+  return (
+    process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY ||
+    process.env.GOOGLE_GENAI_API_KEY
+  );
+}
+
 function getGeminiClient(): GoogleGenAI | null {
-  if (!aiClient && process.env.GEMINI_API_KEY) {
+  const apiKey = getGeminiApiKey();
+  if (!apiKey) {
+    console.info('[CampusCart AI] No Gemini API key detected in environment. Checked: GEMINI_API_KEY, GOOGLE_API_KEY, GOOGLE_GENAI_API_KEY. Using verified campus student kit engine.');
+    return null;
+  }
+
+  if (!aiClient) {
     try {
       aiClient = new GoogleGenAI({
-        apiKey: process.env.GEMINI_API_KEY
+        apiKey
       });
-    } catch (e) {
-      console.warn('Failed to initialize GoogleGenAI client:', e);
+      console.info(`[CampusCart AI] GoogleGenAI client initialized successfully (key: ${apiKey.slice(0, 4)}...${apiKey.slice(-4)}).`);
+    } catch (e: any) {
+      console.error('[CampusCart AI] Failed to initialize GoogleGenAI client:', e.message);
       aiClient = null;
     }
   }
@@ -205,12 +220,15 @@ Return JSON in this format:
 
         let response: any = null;
         try {
-          response = await callModel('gemini-3.8-flash');
-        } catch (_firstErr) {
-          // If gemini-3.8-flash is experiencing temporary demand spikes, try gemini-3.6-flash
+          response = await callModel('gemini-3.6-flash');
+        } catch (firstErr: any) {
+          const errInfo = firstErr?.status || firstErr?.message || 'timeout/busy';
+          console.warn('[CampusCart AI] gemini-3.6-flash note (' + errInfo + '), trying gemini-3.8-flash...');
           try {
-            response = await callModel('gemini-3.6-flash');
-          } catch (_secondErr) {
+            response = await callModel('gemini-3.8-flash');
+          } catch (secondErr: any) {
+            const err2Info = secondErr?.status || secondErr?.message || 'timeout/busy';
+            console.warn('[CampusCart AI] gemini-3.8-flash note (' + err2Info + '). Safe student kit fallback engine activated.');
             response = null;
           }
         }

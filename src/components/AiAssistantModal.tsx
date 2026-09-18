@@ -74,10 +74,22 @@ export const AiAssistantModal: React.FC = () => {
       if (!res.ok) {
         let msg = 'Failed to analyze student situation';
         try {
-          const errData = await res.json();
-          if (errData?.details) msg = errData.details;
-          else if (errData?.error) msg = errData.error;
+          const text = await res.text();
+          try {
+            const errData = JSON.parse(text);
+            if (errData?.details) msg = errData.details;
+            else if (errData?.error) msg = errData.error;
+          } catch (_) {
+            if (res.status === 404) {
+              msg = 'Backend API route not found (HTTP 404). Ensure Vercel Serverless Functions are deployed.';
+            } else if (res.status === 503 || res.status === 504) {
+              msg = `AI service is temporarily busy (HTTP ${res.status}). Please retry in a moment.`;
+            } else if (text && text.length < 120) {
+              msg = text;
+            }
+          }
         } catch (_) {}
+        console.error('[CampusCart AI] Assistant HTTP error:', res.status, msg);
         throw new Error(msg);
       }
 

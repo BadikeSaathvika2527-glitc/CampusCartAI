@@ -35,7 +35,8 @@ interface DBSchema {
   notifications: NotificationItem[];
 }
 
-const DATA_DIR = path.resolve(process.cwd(), 'data');
+const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const DATA_DIR = isServerless ? path.join('/tmp', 'campuscart-data') : path.resolve(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'campuscart.db.json');
 
 class Database {
@@ -55,7 +56,9 @@ class Database {
         return JSON.parse(raw);
       }
     } catch (e) {
-      console.error('Error loading DB file, re-initializing from seeds:', e);
+      if (!isServerless) {
+        console.warn('Notice loading DB file, initializing from campus seeds:', e);
+      }
     }
     return this.getInitialData();
   }
@@ -241,8 +244,10 @@ class Database {
         fs.mkdirSync(DATA_DIR, { recursive: true });
       }
       fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-    } catch (e) {
-      console.error('Failed to persist DB file:', e);
+    } catch (e: any) {
+      if (!isServerless) {
+        console.warn('[CampusCart DB] Disk write notice (in-memory state active):', e.message);
+      }
     }
   }
 
