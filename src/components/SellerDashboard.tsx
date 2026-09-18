@@ -18,7 +18,7 @@ import { useApp } from '../context/AppContext.tsx';
 import { Product, Order, OrderStatus } from '../types.ts';
 
 export const SellerDashboard: React.FC = () => {
-  const { currentUser, categories, showToast } = useApp();
+  const { currentUser, categories, showToast, authFetch } = useApp();
 
   const [stats, setStats] = useState<any>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,9 +44,9 @@ export const SellerDashboard: React.FC = () => {
     setLoading(true);
     try {
       const [statsRes, prodRes, ordRes] = await Promise.all([
-        fetch(`/api/seller/stats?sellerId=${currentUser.id}`),
-        fetch(`/api/products?sellerId=${currentUser.id}`),
-        fetch(`/api/orders?sellerId=${currentUser.id}`)
+        authFetch(`/api/seller/stats?sellerId=${currentUser.id}`),
+        authFetch(`/api/products?sellerId=${currentUser.id}`),
+        authFetch(`/api/orders?sellerId=${currentUser.id}`)
       ]);
 
       if (statsRes.ok) setStats(await statsRes.json());
@@ -65,7 +65,7 @@ export const SellerDashboard: React.FC = () => {
 
   const handleUpdateStock = async (productId: string, newStock: number) => {
     try {
-      const res = await fetch(`/api/products/${productId}`, {
+      const res = await authFetch(`/api/products/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock: newStock })
@@ -73,6 +73,9 @@ export const SellerDashboard: React.FC = () => {
       if (res.ok) {
         showToast('Inventory updated', 'success');
         fetchSellerData();
+      } else {
+        const err = await res.json();
+        showToast(err.error || 'Failed to update stock', 'error');
       }
     } catch (e) {
       showToast('Failed to update stock', 'error');
@@ -81,7 +84,7 @@ export const SellerDashboard: React.FC = () => {
 
   const handleUpdateOrderStatus = async (orderId: string, nextStatus: OrderStatus) => {
     try {
-      const res = await fetch(`/api/orders/${orderId}/status`, {
+      const res = await authFetch(`/api/orders/${orderId}/status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nextStatus })
@@ -89,6 +92,9 @@ export const SellerDashboard: React.FC = () => {
       if (res.ok) {
         showToast(`Order status updated to ${nextStatus.toUpperCase()}`, 'success');
         fetchSellerData();
+      } else {
+        const err = await res.json();
+        showToast(err.error || 'Failed to update order status', 'error');
       }
     } catch (e) {
       showToast('Failed to update order status', 'error');
@@ -113,13 +119,16 @@ export const SellerDashboard: React.FC = () => {
         tags: newProduct.tags.split(',').map(t => t.trim())
       };
 
-      const res = await fetch('/api/products', {
+      const res = await authFetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) throw new Error('Failed to create product');
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Failed to create product');
+      }
 
       showToast('Product added to campus catalog!', 'success');
       setIsAddProductOpen(false);

@@ -403,6 +403,12 @@ class Database {
     return this.data.stores.find(s => s.sellerId === sellerId);
   }
 
+  public createStore(store: Store): Store {
+    this.data.stores.push(store);
+    this.persist();
+    return store;
+  }
+
   // --- STUDENT KITS ---
   public getStudentKits(): StudentKit[] {
     return this.data.studentKits;

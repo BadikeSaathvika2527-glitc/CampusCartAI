@@ -7,7 +7,9 @@ import {
   NotificationItem,
   Category,
   StudentKit,
-  Order
+  Order,
+  RegisterPayload,
+  AuthResponse
 } from '../types.ts';
 
 interface Toast {
@@ -21,6 +23,18 @@ interface AppContextType {
   allUsers: User[];
   switchUser: (userId: string) => Promise<void>;
   activeRole: 'student' | 'seller' | 'admin';
+  authToken: string | null;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  adminLogin: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  demoLogin: (personaId: string) => Promise<{ success: boolean; error?: string }>;
+  registerStudent: (data: RegisterPayload) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
+  isAuthModalOpen: boolean;
+  authModalMode: 'login' | 'register' | 'admin';
+  openAuthModal: (mode?: 'login' | 'register' | 'admin') => void;
+  closeAuthModal: () => void;
+  authFetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
   cart: CartItem[];
   cartSummary: CartCalculation;
   wishlist: Product[];
@@ -80,6 +94,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80',
     demoWalletBalance: 2500
   });
+
+  const [authToken, setAuthToken] = useState<string | null>(() => {
+    return localStorage.getItem('campuscart_auth_token');
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'register' | 'admin'>('login');
+
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<Product[]>([]);
@@ -122,6 +144,55 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, 4000);
   }, []);
 
+  const openAuthModal = (mode: 'login' | 'register' | 'admin' = 'login') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => setIsAuthModalOpen(false);
+
+  const authFetch = useCallback(
+    async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+      const headers = new Headers(init?.headers);
+      if (authToken && !headers.has('Authorization')) {
+        headers.set('Authorization', `Bearer ${authToken}`);
+      }
+      return fetch(input, {
+        ...init,
+        headers
+      });
+    },
+    [authToken]
+  );
+
+  // Verify and restore session on mount (Test Case 12: Refresh page -> authentication remains correct)
+  useEffect(() => {
+    const restoreSession = async () => {
+      const storedToken = localStorage.getItem('campuscart_auth_token');
+      if (storedToken) {
+        try {
+          const res = await fetch('/api/auth/me', {
+            headers: { Authorization: `Bearer ${storedToken}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.user) {
+              setCurrentUser(data.user);
+              setAuthToken(storedToken);
+              return;
+            }
+          } else {
+            localStorage.removeItem('campuscart_auth_token');
+            setAuthToken(null);
+          }
+        } catch (e) {
+          console.error('Failed to restore session:', e);
+        }
+      }
+    };
+    restoreSession();
+  }, []);
+
   // Fetch initial static catalog info
   const fetchGlobalData = async () => {
     try {
@@ -140,11 +211,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const refreshUserData = useCallback(async () => {
     try {
+      const headers: Record<string, string> = {};
+      if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+
       const [userRes, cartRes, wishRes, notifRes] = await Promise.all([
-        fetch(`/api/users/current?userId=${currentUser.id}`),
-        fetch(`/api/cart?userId=${currentUser.id}`),
-        fetch(`/api/wishlist?userId=${currentUser.id}`),
-        fetch(`/api/notifications?userId=${currentUser.id}`)
+        fetch(`/api/users/current?userId=${currentUser.id}`, { headers }),
+        fetch(`/api/cart?userId=${currentUser.id}`, { headers }),
+        fetch(`/api/wishlist?userId=${currentUser.id}`, { headers }),
+        fetch(`/api/notifications?userId=${currentUser.id}`, { headers })
       ]);
 
       if (userRes.ok) {
@@ -163,7 +237,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (e) {
       console.error('Error refreshing user data:', e);
     }
-  }, [currentUser.id]);
+  }, [currentUser.id, authToken]);
 
   useEffect(() => {
     fetchGlobalData();
@@ -197,25 +271,119 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     calc();
   }, [cart, appliedCoupon, deliveryOption]);
 
-  const switchUser = async (userId: string) => {
+  const login = async (email: string, password: string) => {
     try {
-      const res = await fetch(`/api/users/current?userId=${userId}`);
-      if (res.ok) {
-        const user = await res.json();
-        setCurrentUser(user);
-        setAppliedCoupon(null);
-        if (user.role === 'seller') {
-          setActiveTab('seller');
-        } else if (user.role === 'admin') {
-          setActiveTab('admin');
-        } else {
-          setActiveTab('shop');
-        }
-        showToast(`Switched account to ${user.name} (${user.role.toUpperCase()})`, 'info');
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        return { success: false, error: data.error || 'Invalid credentials' };
       }
-    } catch (e) {
-      showToast('Failed to switch user', 'error');
+
+      setAuthToken(data.token);
+      localStorage.setItem('campuscart_auth_token', data.token);
+      setCurrentUser(data.user);
+      setAppliedCoupon(null);
+
+      // Auto-redirect to appropriate role surface
+      if (data.redirectTab) {
+        setActiveTab(data.redirectTab);
+      }
+      showToast(`Welcome back, ${data.user.name}! Signed in as ${data.user.role.toUpperCase()}`, 'success');
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Login network error' };
     }
+  };
+
+  const adminLogin = async (email: string, password: string) => {
+    try {
+      const res = await fetch('/api/auth/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        return { success: false, error: data.error || 'Admin login failed' };
+      }
+
+      setAuthToken(data.token);
+      localStorage.setItem('campuscart_auth_token', data.token);
+      setCurrentUser(data.user);
+      setActiveTab('admin');
+      showToast(`Administrator verified: Welcome to Admin Center, ${data.user.name}`, 'success');
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Admin login network error' };
+    }
+  };
+
+  const demoLogin = async (personaId: string) => {
+    try {
+      const res = await fetch('/api/auth/demo-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ personaId })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        return { success: false, error: data.error || 'Persona switch failed' };
+      }
+
+      setAuthToken(data.token);
+      localStorage.setItem('campuscart_auth_token', data.token);
+      setCurrentUser(data.user);
+      setAppliedCoupon(null);
+
+      if (data.redirectTab) {
+        setActiveTab(data.redirectTab);
+      }
+      showToast(`Switched account to ${data.user.name} (${data.user.role.toUpperCase()})`, 'info');
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Error switching persona' };
+    }
+  };
+
+  const registerStudent = async (payload: RegisterPayload) => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        return { success: false, error: data.error || 'Registration failed' };
+      }
+
+      setAuthToken(data.token);
+      localStorage.setItem('campuscart_auth_token', data.token);
+      setCurrentUser(data.user);
+      setAppliedCoupon(null);
+      setActiveTab('shop');
+      showToast(`Student account registered! Welcome to CampusCart, ${data.user.name}!`, 'success');
+      return { success: true };
+    } catch (e: any) {
+      return { success: false, error: e.message || 'Registration network error' };
+    }
+  };
+
+  const logout = () => {
+    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    localStorage.removeItem('campuscart_auth_token');
+    setAuthToken(null);
+    setAppliedCoupon(null);
+    setActiveTab('shop');
+    showToast('Signed out successfully', 'info');
+  };
+
+  const switchUser = async (userId: string) => {
+    await demoLogin(userId);
   };
 
   const addToCart = async (productId: string, quantity = 1) => {
@@ -380,6 +548,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         allUsers,
         switchUser,
         activeRole: currentUser.role,
+        authToken,
+        isAuthenticated: Boolean(authToken),
+        login,
+        adminLogin,
+        demoLogin,
+        registerStudent,
+        logout,
+        isAuthModalOpen,
+        authModalMode,
+        openAuthModal,
+        closeAuthModal,
+        authFetch,
         cart,
         cartSummary,
         wishlist,

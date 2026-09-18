@@ -1,17 +1,30 @@
 import express from 'express';
 import { db } from './db.ts';
 import { generateStudentKitRecommendation, getGeminiApiKey } from './gemini.ts';
-import type { Product, OrderStatus, PaymentMethod } from '../src/types.ts';
+import type { Product, OrderStatus, PaymentMethod, User, UserRole } from '../src/types.ts';
+import {
+  hashPassword,
+  verifyPassword,
+  createToken,
+  sanitizeUser,
+  authenticateUser,
+  requireAuth,
+  requireRole,
+  migrateUsersAndSeedAdmin
+} from './auth.ts';
 
 export const app = express();
 
 app.use(express.json());
 
+// Run migration and ensure initial admin account on startup
+migrateUsersAndSeedAdmin();
+
 // Enable basic CORS and header normalization
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-auth-token');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -20,7 +33,7 @@ app.use((req, res, next) => {
   // If Vercel rewrites stripped the '/api' prefix, prepend it so routes match cleanly
   if (req.url && !req.url.startsWith('/api') && req.url !== '/' && !req.url.startsWith('/assets') && !req.url.startsWith('/vite')) {
     const apiPrefixes = [
-      '/health', '/ai', '/users', '/categories', '/products',
+      '/health', '/ai', '/users', '/auth', '/categories', '/products',
       '/kits', '/cart', '/wishlist', '/coupons', '/checkout',
       '/orders', '/recommendations', '/notifications', '/seller',
       '/admin', '/seed', '/stores'
@@ -32,6 +45,9 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Authenticate user on every incoming request
+app.use(authenticateUser);
 
 // --- HEALTH CHECK ---
 app.get('/api/health', (req, res) => {
@@ -46,66 +62,283 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// --- AUTH & USERS ---
-app.get('/api/users/all', (req, res) => {
-  res.json(db.getUsers());
+// --- AUTH & RBAC ENDPOINTS ---
+
+/**
+ * Public Student Registration:
+ * - Every new public registration MUST automatically create a STUDENT account.
+ * - Any client attempt to pass { role: 'admin' } or { role: 'seller' } is strictly rejected or forced to 'student'.
+ * - Passwords are securely hashed with PBKDF2 + cryptographic salt.
+ */
+app.post('/api/auth/register', (req, res) => {
+  const { name, email, password, confirmPassword, college, course, year, phone } = req.body || {};
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required for registration' });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+  }
+
+  if (confirmPassword && password !== confirmPassword) {
+    return res.status(400).json({ error: 'Password and Confirm Password do not match' });
+  }
+
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const existing = db.getUserByEmail(normalizedEmail);
+  if (existing) {
+    return res.status(400).json({ error: 'An account with this email already exists. Please log in.' });
+  }
+
+  // SECURITY: Never allow public registration to create ADMIN or SELLER accounts.
+  if (req.body.role && req.body.role.toLowerCase() !== 'student') {
+    console.warn(`[CampusCart RBAC Alert] Public registration attempt with forbidden role '${req.body.role}' from IP ${req.ip}. Forcing STUDENT role.`);
+  }
+
+  const newStudent: User = {
+    id: 'usr-' + Date.now().toString(36) + Math.random().toString(36).substring(2, 5),
+    name: String(name).trim(),
+    email: normalizedEmail,
+    phone: phone ? String(phone).trim() : '+91 90000 00000',
+    role: 'student', // ALWAYS STRICTLY STUDENT
+    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+    demoWalletBalance: 2000,
+    passwordHash: hashPassword(password),
+    createdAt: new Date().toISOString(),
+    profile: {
+      college: college ? String(college).trim() : 'Campus University',
+      course: course ? String(course).trim() : 'General Studies',
+      year: year ? Number(year) : 1,
+      semester: year ? Number(year) * 2 - 1 : 1,
+      hostelStatus: 'hostel',
+      hostelRoom: 'Campus Hostel'
+    }
+  };
+
+  db.createUser(newStudent);
+  const token = createToken(newStudent);
+
+  res.status(201).json({
+    success: true,
+    message: 'Student account created successfully!',
+    token,
+    user: sanitizeUser(newStudent),
+    redirectTab: 'shop'
+  });
+});
+
+/**
+ * Universal Login:
+ * - Checks email and securely verifies password hash.
+ * - Automatically checks stored role and specifies appropriate dashboard/home redirect.
+ * - STUDENT -> 'shop'
+ * - SELLER -> 'seller'
+ * - ADMIN -> 'admin'
+ */
+app.post('/api/auth/login', (req, res) => {
+  const { email, password } = req.body || {};
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Both email and password are required' });
+  }
+
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const user = db.getUserByEmail(normalizedEmail);
+
+  if (!user) {
+    return res.status(401).json({ error: 'No account found with this email address' });
+  }
+
+  const isValidPassword = verifyPassword(password, user.passwordHash);
+  if (!isValidPassword) {
+    return res.status(401).json({ error: 'Incorrect password. Please verify your credentials.' });
+  }
+
+  const token = createToken(user);
+  let redirectTab: 'shop' | 'seller' | 'admin' = 'shop';
+  if (user.role === 'admin') {
+    redirectTab = 'admin';
+  } else if (user.role === 'seller') {
+    redirectTab = 'seller';
+  }
+
+  res.json({
+    success: true,
+    token,
+    user: sanitizeUser(user),
+    redirectTab
+  });
+});
+
+/**
+ * Dedicated Admin Login:
+ * - Requires ADMIN role. Non-admin accounts are rejected with 403 Forbidden.
+ */
+app.post('/api/auth/admin-login', (req, res) => {
+  const { email, password } = req.body || {};
+
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Admin email and password are required' });
+  }
+
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const user = db.getUserByEmail(normalizedEmail);
+
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid administrator credentials' });
+  }
+
+  const isValidPassword = verifyPassword(password, user.passwordHash);
+  if (!isValidPassword) {
+    return res.status(401).json({ error: 'Invalid administrator credentials' });
+  }
+
+  if (user.role !== 'admin') {
+    console.warn(`[CampusCart RBAC Alert] Non-admin user ${user.id} (${user.role}) attempted admin portal login.`);
+    return res.status(403).json({
+      error: 'Access Denied: This portal is reserved strictly for authorized University Administrators.',
+      code: 'FORBIDDEN'
+    });
+  }
+
+  const token = createToken(user);
+  res.json({
+    success: true,
+    token,
+    user: sanitizeUser(user),
+    redirectTab: 'admin'
+  });
+});
+
+/**
+ * Demo Login (For test personas):
+ * - Issues an authenticated token for a seeded test persona without hardcoding passwords in client code.
+ */
+app.post('/api/auth/demo-login', (req, res) => {
+  const { personaId, role } = req.body || {};
+  let targetUser: User | undefined;
+
+  if (personaId) {
+    targetUser = db.getUserById(personaId);
+  } else if (role) {
+    targetUser = db.getUsers().find(u => u.role === role);
+  }
+
+  if (!targetUser) {
+    return res.status(404).json({ error: 'Target persona not found in database' });
+  }
+
+  const token = createToken(targetUser);
+  let redirectTab: 'shop' | 'seller' | 'admin' = 'shop';
+  if (targetUser.role === 'admin') redirectTab = 'admin';
+  else if (targetUser.role === 'seller') redirectTab = 'seller';
+
+  res.json({
+    success: true,
+    token,
+    user: sanitizeUser(targetUser),
+    redirectTab
+  });
+});
+
+/**
+ * Get currently authenticated user session
+ */
+app.get('/api/auth/me', requireAuth, (req, res) => {
+  res.json({
+    authenticated: true,
+    user: sanitizeUser(req.user!)
+  });
+});
+
+/**
+ * User Logout
+ */
+app.post('/api/auth/logout', (_req, res) => {
+  res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// Legacy User Endpoints (Preserved for compatibility, secured)
+app.get('/api/users/all', (_req, res) => {
+  const users = db.getUsers().map(sanitizeUser);
+  res.json(users);
 });
 
 app.get('/api/users/current', (req, res) => {
+  if (req.user) {
+    return res.json(sanitizeUser(req.user));
+  }
   const userId = (req.query.userId as string) || 'student-1';
   const user = db.getUserById(userId);
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
   }
-  res.json(user);
+  res.json(sanitizeUser(user));
 });
 
 app.post('/api/users/login', (req, res) => {
-  const { email } = req.body;
-  if (!email) {
-    return res.status(400).json({ error: 'Email is required' });
-  }
+  const { email, password } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required' });
+
   const user = db.getUserByEmail(email);
   if (!user) {
-    return res.status(401).json({ error: 'User not found with this email. Try demo accounts below.' });
+    return res.status(401).json({ error: 'User not found with this email' });
   }
-  res.json({ success: true, user });
+
+  // If password is provided, verify it
+  if (password && !verifyPassword(password, user.passwordHash)) {
+    return res.status(401).json({ error: 'Incorrect password' });
+  }
+
+  const token = createToken(user);
+  res.json({ success: true, token, user: sanitizeUser(user) });
 });
 
 app.post('/api/users/register', (req, res) => {
-  const { name, email, phone, role, college, course } = req.body;
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
-  }
-  const existing = db.getUserByEmail(email);
-  if (existing) {
-    return res.status(400).json({ error: 'Email already registered' });
-  }
-  const newUser = db.createUser({
-    id: 'usr-' + Date.now().toString(36),
-    name,
-    email,
-    phone: phone || '+91 90000 00000',
-    role: role || 'student',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
-    demoWalletBalance: 2000,
-    profile: {
-      college: college || 'Campus University',
-      course: course || 'General Studies',
-      year: 1,
-      semester: 1,
-      hostelStatus: 'hostel'
-    }
-  });
-  res.json({ success: true, user: newUser });
+  // Delegate to safe student registration
+  req.url = '/api/auth/register';
+  return app._router.handle(req, res);
 });
 
-app.put('/api/users/profile', (req, res) => {
-  const { userId, profile, addresses } = req.body;
-  if (!userId) return res.status(400).json({ error: 'userId is required' });
-  const updated = db.updateUser(userId, { profile, addresses });
-  res.json(updated);
+/**
+ * Update User Profile:
+ * - SECURITY: Explicitly rejects any attempt by a student/seller to modify their role.
+ * - Users can only edit their own profile unless they are an admin.
+ */
+app.put('/api/users/profile', requireAuth, (req, res) => {
+  const { userId, profile, addresses, name, phone, role } = req.body || {};
+  const targetId = userId || req.user!.id;
+
+  // SECURITY CHECK 1: Disallow unauthorized role changes
+  if (role && role !== req.user!.role) {
+    console.warn(`[CampusCart Security Alert] User ${req.user!.id} (${req.user!.role}) attempted to elevate role to '${role}'! REJECTED.`);
+    return res.status(403).json({
+      error: 'Unauthorized role modification attempt: You cannot modify account roles.',
+      code: 'ROLE_MODIFICATION_FORBIDDEN'
+    });
+  }
+
+  // SECURITY CHECK 2: Non-admin can only update their own record
+  if (req.user!.role !== 'admin' && req.user!.id !== targetId) {
+    return res.status(403).json({
+      error: 'Access Denied: You cannot modify another user\'s profile.',
+      code: 'FORBIDDEN'
+    });
+  }
+
+  const updates: Partial<User> = {};
+  if (profile) updates.profile = profile;
+  if (addresses) updates.addresses = addresses;
+  if (name) updates.name = String(name).trim();
+  if (phone) updates.phone = String(phone).trim();
+
+  const updated = db.updateUser(targetId, updates);
+  if (!updated) return res.status(404).json({ error: 'User not found' });
+
+  res.json(sanitizeUser(updated));
 });
+
 
 // --- CATEGORIES ---
 app.get('/api/categories', (req, res) => {
@@ -134,33 +367,70 @@ app.get('/api/products/:id', (req, res) => {
   res.json(product);
 });
 
-app.post('/api/products', (req, res) => {
+app.post('/api/products', requireRole(['seller', 'admin']), (req, res) => {
   const productData = req.body;
   if (!productData.name || !productData.price || !productData.categoryId) {
     return res.status(400).json({ error: 'Missing required product fields' });
   }
+
+  // If seller, ensure sellerId and store are tied to authenticated seller
+  let sellerId = productData.sellerId;
+  let storeName = productData.storeName;
+  if (req.user!.role === 'seller') {
+    sellerId = req.user!.id;
+    const store = db.getStoreBySellerId(req.user!.id);
+    if (store) storeName = store.name;
+  }
+
   const newProduct: Product = {
     ...productData,
     id: 'p-' + Date.now().toString(36),
+    sellerId: sellerId || req.user!.id,
+    storeName: storeName || 'Campus Partner Store',
     slug: productData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
     rating: 4.5,
     reviewCount: 0,
     isActive: true,
-    tags: productData.tags || []
+    tags: Array.isArray(productData.tags)
+      ? productData.tags
+      : String(productData.tags || '')
+          .split(',')
+          .map((t: string) => t.trim())
+          .filter(Boolean)
   };
   const created = db.createProduct(newProduct);
-  res.json(created);
+  res.status(201).json(created);
 });
 
-app.put('/api/products/:id', (req, res) => {
+app.put('/api/products/:id', requireRole(['seller', 'admin']), (req, res) => {
+  const product = db.getProductById(req.params.id);
+  if (!product) return res.status(404).json({ error: 'Product not found' });
+
+  // If user is seller, verify they own this product
+  if (req.user!.role === 'seller' && product.sellerId !== req.user!.id) {
+    return res.status(403).json({
+      error: 'Access Denied: You cannot modify products belonging to another seller store.',
+      code: 'FORBIDDEN'
+    });
+  }
+
   const updated = db.updateProduct(req.params.id, req.body);
-  if (!updated) return res.status(404).json({ error: 'Product not found' });
   res.json(updated);
 });
 
-app.delete('/api/products/:id', (req, res) => {
-  const ok = db.deleteProduct(req.params.id);
-  res.json({ success: ok });
+app.delete('/api/products/:id', requireRole(['seller', 'admin']), (req, res) => {
+  const product = db.getProductById(req.params.id);
+  if (!product) return res.status(404).json({ error: 'Product not found' });
+
+  if (req.user!.role === 'seller' && product.sellerId !== req.user!.id) {
+    return res.status(403).json({
+      error: 'Access Denied: You cannot delete products belonging to another seller store.',
+      code: 'FORBIDDEN'
+    });
+  }
+
+  const deleted = db.deleteProduct(req.params.id);
+  res.json({ success: deleted });
 });
 
 app.post('/api/products/:id/reviews', (req, res) => {
@@ -489,8 +759,13 @@ app.post('/api/notifications/read-all', (req, res) => {
 });
 
 // --- SELLER DASHBOARD STATS ---
-app.get('/api/seller/stats', (req, res) => {
-  const sellerId = (req.query.sellerId as string) || 'seller-1';
+app.get('/api/seller/stats', requireRole(['seller', 'admin']), (req, res) => {
+  // If authenticated user is a seller, restrict strictly to their own store
+  let sellerId = (req.query.sellerId as string) || 'seller-1';
+  if (req.user!.role === 'seller') {
+    sellerId = req.user!.id;
+  }
+
   const store = db.getStoreBySellerId(sellerId);
   const products = db.getProducts({ sellerId });
   const orders = db.getOrdersForSeller(sellerId);
@@ -529,8 +804,8 @@ app.get('/api/seller/stats', (req, res) => {
   });
 });
 
-// --- ADMIN DASHBOARD STATS ---
-app.get('/api/admin/stats', (req, res) => {
+// --- ADMIN DASHBOARD & MANAGEMENT (STRICT ADMIN ROLE) ---
+app.get('/api/admin/stats', requireRole('admin'), (_req, res) => {
   const users = db.getUsers();
   const students = users.filter(u => u.role === 'student');
   const sellers = users.filter(u => u.role === 'seller');
@@ -555,14 +830,118 @@ app.get('/api/admin/stats', (req, res) => {
   });
 });
 
-app.post('/api/admin/stores/:id/toggle-approval', (req, res) => {
+/**
+ * Admin: List all platform users with role filters and metrics
+ */
+app.get('/api/admin/users', requireRole('admin'), (req, res) => {
+  const { role } = req.query;
+  let users = db.getUsers();
+  if (role) {
+    users = users.filter(u => u.role === role);
+  }
+  res.json(users.map(sanitizeUser));
+});
+
+/**
+ * Admin: Approve or Suspend Campus Partner Store
+ */
+app.post('/api/admin/stores/:id/toggle-approval', requireRole('admin'), (req, res) => {
   const store = db.getStoreById(req.params.id);
   if (!store) return res.status(404).json({ error: 'Store not found' });
   store.isApproved = !store.isApproved;
   res.json({ success: true, store });
 });
 
-app.post('/api/seed/reset', (req, res) => {
+/**
+ * Admin: Create Authorized Seller Account & Store
+ * - Only verified administrators can approve/create seller accounts.
+ */
+app.post('/api/admin/create-seller', requireRole('admin'), (req, res) => {
+  const { name, email, password, phone, storeName, campusLocation, buildingLocation, description } = req.body || {};
+
+  if (!name || !email || !password || !storeName) {
+    return res.status(400).json({ error: 'Seller name, email, password, and store name are required' });
+  }
+
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const existing = db.getUserByEmail(normalizedEmail);
+  if (existing) {
+    return res.status(400).json({ error: 'An account with this email already exists' });
+  }
+
+  const sellerId = 'seller-' + Date.now().toString(36);
+  const storeId = 'store-' + Date.now().toString(36);
+
+  const newSeller: User = {
+    id: sellerId,
+    name: String(name).trim(),
+    email: normalizedEmail,
+    phone: phone ? String(phone).trim() : '+91 98000 00000',
+    role: 'seller', // Strictly SELLER
+    sellerStoreId: storeId,
+    passwordHash: hashPassword(password),
+    createdAt: new Date().toISOString()
+  };
+
+  db.createUser(newSeller);
+
+  const newStore = db.createStore({
+    id: storeId,
+    name: String(storeName).trim(),
+    sellerId: sellerId,
+    campusLocation: campusLocation || buildingLocation || 'Campus Student Center, Ground Floor',
+    buildingLocation: buildingLocation || campusLocation || 'Student Activity Center',
+    rating: 4.8,
+    isApproved: true,
+    description: description || 'Authorized campus vendor providing authentic student essentials and fast delivery.'
+  });
+
+  res.status(201).json({
+    success: true,
+    message: 'Authorized seller account and campus store created successfully',
+    seller: sanitizeUser(newSeller),
+    store: newStore
+  });
+});
+
+/**
+ * Admin: Provision another administrator account
+ * - SECURITY: Only an existing authorized administrator can create another admin account.
+ */
+app.post('/api/admin/create-admin', requireRole('admin'), (req, res) => {
+  const { name, email, password, phone } = req.body || {};
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Admin name, email, and password are required' });
+  }
+
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const existing = db.getUserByEmail(normalizedEmail);
+  if (existing) {
+    return res.status(400).json({ error: 'An account with this email already exists' });
+  }
+
+  const newAdmin: User = {
+    id: 'admin-' + Date.now().toString(36),
+    name: String(name).trim(),
+    email: normalizedEmail,
+    phone: phone ? String(phone).trim() : '+91 99999 00000',
+    role: 'admin',
+    passwordHash: hashPassword(password),
+    createdAt: new Date().toISOString()
+  };
+
+  db.createUser(newAdmin);
+
+  res.status(201).json({
+    success: true,
+    message: 'New university administrator created successfully',
+    admin: sanitizeUser(newAdmin)
+  });
+});
+
+app.post('/api/seed/reset', requireRole('admin'), (_req, res) => {
   db.resetToSeeds();
+  migrateUsersAndSeedAdmin();
   res.json({ success: true, message: 'Database reset to fresh student seed state' });
 });

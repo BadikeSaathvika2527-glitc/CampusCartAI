@@ -35,6 +35,27 @@ export interface User {
   addresses?: Address[];
   sellerStoreId?: string;
   demoWalletBalance?: number;
+  createdAt?: string;
+  passwordHash?: string;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  token?: string;
+  user?: User;
+  error?: string;
+  redirectTab?: 'shop' | 'seller' | 'admin';
+}
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  college?: string;
+  course?: string;
+  year?: number;
+  phone?: string;
 }
 
 export interface Category {
