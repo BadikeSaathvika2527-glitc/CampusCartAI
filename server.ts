@@ -3,7 +3,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { db } from './server/db.ts';
 import { generateStudentKitRecommendation } from './server/gemini.ts';
-import { Product, OrderStatus, PaymentMethod } from './src/types.ts';
+import type { Product, OrderStatus, PaymentMethod } from './src/types.ts';
 
 async function startServer() {
   const app = express();

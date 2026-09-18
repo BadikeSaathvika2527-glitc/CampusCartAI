@@ -14,10 +14,12 @@ import {
   Tag,
   Sliders,
   Check,
-  Package
+  Package,
+  RotateCcw,
+  Sparkle
 } from 'lucide-react';
 import { useApp } from '../context/AppContext.tsx';
-import { AIContextResponse, AIProductRecommendation, Product } from '../types.ts';
+import type { AIContextResponse, AIProductRecommendation, Product } from '../types.ts';
 
 export const AiAssistantModal: React.FC = () => {
   const {
@@ -33,6 +35,7 @@ export const AiAssistantModal: React.FC = () => {
   const [query, setQuery] = useState('');
   const [budget, setBudget] = useState<number>(3000);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [result, setResult] = useState<AIContextResponse | null>(null);
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>({});
   const [reasoningStep, setReasoningStep] = useState(0);
@@ -44,17 +47,19 @@ export const AiAssistantModal: React.FC = () => {
       const initialB = aiInitialBudget || 3000;
       setQuery(initialQ);
       setBudget(initialB);
+      setErrorMessage(null);
       runAssistant(initialQ, initialB);
     }
   }, [isAiModalOpen, aiInitialPrompt, aiInitialBudget]);
 
   const runAssistant = async (searchQuery: string, searchBudget: number) => {
     setLoading(true);
+    setErrorMessage(null);
     setReasoningStep(1);
 
     // Simulate animated reasoning steps
-    const stepTimer1 = setTimeout(() => setReasoningStep(2), 500);
-    const stepTimer2 = setTimeout(() => setReasoningStep(3), 1000);
+    const stepTimer1 = setTimeout(() => setReasoningStep(2), 600);
+    const stepTimer2 = setTimeout(() => setReasoningStep(3), 1200);
 
     try {
       const res = await fetch('/api/ai/assistant', {
@@ -67,11 +72,18 @@ export const AiAssistantModal: React.FC = () => {
       clearTimeout(stepTimer2);
 
       if (!res.ok) {
-        throw new Error('Failed to analyze student situation');
+        let msg = 'Failed to analyze student situation';
+        try {
+          const errData = await res.json();
+          if (errData?.details) msg = errData.details;
+          else if (errData?.error) msg = errData.error;
+        } catch (_) {}
+        throw new Error(msg);
       }
 
       const data: AIContextResponse = await res.json();
       setResult(data);
+      setErrorMessage(null);
 
       // By default, select all recommended items
       const initialSelected: Record<string, boolean> = {};
@@ -80,7 +92,10 @@ export const AiAssistantModal: React.FC = () => {
       });
       setSelectedItems(initialSelected);
     } catch (e: any) {
-      showToast(e.message || 'Error running AI assistant', 'error');
+      const errorText = e.message || 'Error running AI assistant';
+      console.error('AI assistant frontend error:', e);
+      setErrorMessage(errorText);
+      showToast(errorText, 'error');
     } finally {
       setLoading(false);
       setReasoningStep(0);
@@ -192,6 +207,11 @@ export const AiAssistantModal: React.FC = () => {
                 type="text"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && !loading) {
+                    runAssistant(query, budget);
+                  }
+                }}
                 placeholder="What do you need for college? (e.g. End-sem exams, CSE lab, Hostel)"
                 className="w-full bg-transparent text-white text-xs sm:text-sm outline-none placeholder:text-slate-400"
               />
@@ -246,6 +266,82 @@ export const AiAssistantModal: React.FC = () => {
                   <div className={`transition-all ${reasoningStep >= 3 ? 'text-blue-600 font-semibold' : ''}`}>
                     ✓ 3. Optimizing bundle prices and budget constraints
                   </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Error / Empty state fallback */}
+          {!loading && !result && (
+            <div className="py-10 px-4 text-center max-w-lg mx-auto space-y-5">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
+                <AlertCircle className="w-7 h-7 text-amber-600" />
+              </div>
+
+              <div>
+                <h3 className="text-lg font-bold text-slate-900">
+                  {errorMessage ? 'Analysis Needs Attention' : 'Ready to Analyze Your Needs'}
+                </h3>
+                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+                  {errorMessage
+                    ? `${errorMessage}. Click Retry to re-run the assistant or pick one of the verified student packs below.`
+                    : 'Enter your course, semester, or hostel requirements to generate a complete student bundle.'}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <button
+                  onClick={() => runAssistant(query || 'Joining hostel next week, need essentials & bedding under ₹3,000', budget || 3000)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20 flex items-center space-x-2"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Retry Analysis</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    const hostelQuery = 'Joining hostel next week, need room essentials & bedding under ₹3,000';
+                    setQuery(hostelQuery);
+                    setBudget(3000);
+                    runAssistant(hostelQuery, 3000);
+                  }}
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-5 py-2.5 rounded-xl transition-all border border-slate-200 flex items-center space-x-2"
+                >
+                  <Package className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Load Verified Hostel Kit</span>
+                </button>
+              </div>
+
+              {/* Quick Prompt Starters */}
+              <div className="pt-4 border-t border-slate-100 text-left">
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                  Popular College Situations:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {[
+                    { label: 'Hostel Room & Bedding', prompt: 'Joining hostel next week, need room essentials & bedding under ₹3,000', b: 3000 },
+                    { label: 'CSE Lab & Electronics', prompt: 'CSE 2nd year student, need lab tools, breadboard & mouse under ₹2,500', b: 2500 },
+                    { label: 'End-Sem Exam Revision', prompt: 'End semester exams approaching, need notebooks, highlighter & study gear under ₹1,000', b: 1000 },
+                    { label: 'College Road Trip', prompt: 'Going on college weekend trip, need travel bottle, umbrella & bag under ₹1,500', b: 1500 }
+                  ].map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        setQuery(item.prompt);
+                        setBudget(item.b);
+                        runAssistant(item.prompt, item.b);
+                      }}
+                      className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/80 border border-slate-200/80 hover:border-blue-300 text-left transition-all group"
+                    >
+                      <div className="text-xs font-bold text-slate-800 group-hover:text-blue-600 flex items-center justify-between">
+                        <span>{item.label}</span>
+                        <ArrowRight className="w-3 h-3 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">
+                        Target Budget: ₹{item.b}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

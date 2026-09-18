@@ -1,19 +1,19 @@
 import { GoogleGenAI } from '@google/genai';
 import { db } from './db.ts';
-import { AIContextResponse, AIProductRecommendation, Product } from '../src/types.ts';
+import type { AIContextResponse, AIProductRecommendation, Product } from '../src/types.ts';
 
 let aiClient: GoogleGenAI | null = null;
 
 function getGeminiClient(): GoogleGenAI | null {
   if (!aiClient && process.env.GEMINI_API_KEY) {
-    aiClient = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build'
-        }
-      }
-    });
+    try {
+      aiClient = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY
+      });
+    } catch (e) {
+      console.warn('Failed to initialize GoogleGenAI client:', e);
+      aiClient = null;
+    }
   }
   return aiClient;
 }
@@ -125,13 +125,12 @@ export async function generateStudentKitRecommendation(
 ): Promise<AIContextResponse> {
   const contextInfo = parseStudentContext(query, userBudget);
   const targetBudget = contextInfo.detectedBudget || userBudget || 3000;
-
-  // Retrieve actual products from DB
   const allAvailableProducts = db.getProducts({ inStockOnly: false });
 
-  // Try Gemini AI if available
-  const client = getGeminiClient();
-  let aiMatchedProductIds: { productId: string; quantity: number; why: string; isCore: boolean }[] = [];
+  try {
+    // Try Gemini AI if available
+    const client = getGeminiClient();
+    let aiMatchedProductIds: { productId: string; quantity: number; why: string; isCore: boolean }[] = [];
 
   if (client) {
     try {
@@ -172,7 +171,11 @@ Return JSON in this format:
   ]
 }`;
 
-      const response = await client.models.generateContent({
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error('Gemini API call timed out after 5s')), 5000);
+      });
+
+      const generatePromise = client.models.generateContent({
         model: 'gemini-3.8-flash',
         contents: prompt,
         config: {
@@ -180,6 +183,8 @@ Return JSON in this format:
           temperature: 0.2
         }
       });
+
+      const response = await Promise.race([generatePromise, timeoutPromise]);
 
       const responseText = response.text || '{}';
       const parsed = JSON.parse(responseText);
@@ -193,13 +198,13 @@ Return JSON in this format:
     }
   }
 
-  // Fallback / Deterministic assembly if AI was unavailable or produced empty
+  // Fallback / Deterministic assembly if AI was unavailable, timed out, or produced empty
   if (aiMatchedProductIds.length === 0) {
     aiMatchedProductIds = buildDeterministicKit(contextInfo.context, allAvailableProducts);
   }
 
   // Build recommendation list with actual products from database
-  const recommendations: AIProductRecommendation[] = [];
+  let recommendations: AIProductRecommendation[] = [];
   const selectedProductIds = new Set<string>();
 
   for (const item of aiMatchedProductIds) {
@@ -210,7 +215,7 @@ Return JSON in this format:
 
     // Find smart alternatives if product is out of stock or high priced
     const alternatives = allAvailableProducts.filter(
-      p => p.id !== product.id && p.categoryId === product.categoryId && p.stock > 0
+      p => p.id !== product.id && p.categoryId === product.categoryId && (p.stock ?? 0) > 0
     ).slice(0, 2);
 
     recommendations.push({
@@ -222,14 +227,32 @@ Return JSON in this format:
     });
   }
 
+  // Double check recommendations are not empty
+  if (recommendations.length === 0) {
+    const fallbackIds = buildDeterministicKit(contextInfo.context, allAvailableProducts);
+    for (const item of fallbackIds) {
+      const product = allAvailableProducts.find(p => p.id === item.productId);
+      if (!product) continue;
+      recommendations.push({
+        product,
+        quantity: item.quantity || 1,
+        whyRecommended: item.why,
+        isCore: item.isCore
+      });
+    }
+  }
+
   // Budget Optimization
   let originalTotal = 0;
   let discountTotal = 0;
   let subtotal = 0;
 
   for (const rec of recommendations) {
-    originalTotal += rec.product.originalPrice * rec.quantity;
-    discountTotal += (rec.product.originalPrice - rec.product.price) * rec.quantity;
+    const origPrice = rec.product.originalPrice && rec.product.originalPrice >= rec.product.price
+      ? rec.product.originalPrice
+      : Math.round(rec.product.price * 1.25);
+    originalTotal += origPrice * rec.quantity;
+    discountTotal += (origPrice - rec.product.price) * rec.quantity;
     subtotal += rec.product.price * rec.quantity;
   }
 
@@ -278,6 +301,43 @@ Return JSON in this format:
     suggestedAdjustments: suggestedAdjustments.length > 0 ? suggestedAdjustments : undefined,
     isFallback: !client
   };
+  } catch (error) {
+    console.error('Safe fallback triggered in generateStudentKitRecommendation:', error);
+    const fallbackIds = buildDeterministicKit(contextInfo.context, allAvailableProducts);
+    const recs: AIProductRecommendation[] = [];
+    let sub = 0;
+    let orig = 0;
+
+    for (const item of fallbackIds) {
+      const p = allAvailableProducts.find(prod => prod.id === item.productId);
+      if (!p) continue;
+      const o = (p.originalPrice && p.originalPrice >= p.price) ? p.originalPrice : Math.round(p.price * 1.25);
+      sub += p.price * (item.quantity || 1);
+      orig += o * (item.quantity || 1);
+      recs.push({
+        product: p,
+        quantity: item.quantity || 1,
+        whyRecommended: item.why,
+        isCore: item.isCore
+      });
+    }
+
+    const fee = sub >= 499 ? 0 : 49;
+    return {
+      context: contextInfo.context,
+      contextTitle: contextInfo.contextTitle,
+      contextDescription: contextInfo.contextDescription,
+      detectedBudget: targetBudget,
+      recommendations: recs,
+      originalTotal: orig,
+      discountTotal: orig - sub,
+      deliveryFee: fee,
+      finalTotal: sub + fee,
+      isWithinBudget: (sub + fee) <= targetBudget,
+      budgetMessage: `Campus verified essential kit prepared for ${contextInfo.contextTitle}.`,
+      isFallback: true
+    };
+  }
 }
 
 function buildDeterministicKit(context: string, allProducts: Product[]): { productId: string; quantity: number; why: string; isCore: boolean }[] {

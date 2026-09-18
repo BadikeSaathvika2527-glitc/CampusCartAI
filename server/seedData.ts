@@ -1,4 +1,4 @@
-import { Category, Product, User, Store, StudentKit, Coupon } from '../src/types.ts';
+import type { Category, Product, User, Store, StudentKit, Coupon } from '../src/types.ts';
 
 export const INITIAL_CATEGORIES: Category[] = [
   { id: 'cat-college', name: 'College Essentials', slug: 'college-essentials', description: 'Notebooks, pens, geometry boxes, calculators & office files', iconName: 'BookOpen', itemCount: 12 },
