@@ -131,23 +131,36 @@ export async function generateStudentKitRecommendation(
     // Try Gemini AI if available
     const client = getGeminiClient();
     let aiMatchedProductIds: { productId: string; quantity: number; why: string; isCore: boolean }[] = [];
+    let usedFallback = !client;
 
-  if (client) {
-    try {
-      const prompt = `You are CampusCart AI's Student Context Engine for college students.
+    if (client) {
+      try {
+        // Pre-filter catalog to the most relevant candidate products for this context to keep the prompt concise & fast
+        const relevantProducts = allAvailableProducts.filter(p => {
+          if (contextInfo.targetCategoryIds.includes(p.categoryId)) return true;
+          if (p.tags && p.tags.some(t => contextInfo.suggestedTags.includes(t))) return true;
+          if (p.isHostelEssential && contextInfo.context === 'hostel_student') return true;
+          if (p.isExamEssential && contextInfo.context === 'exam_preparation') return true;
+          if (p.isCseEssential && (contextInfo.context === 'cse_lab_project' || contextInfo.context === 'project_development')) return true;
+          if (p.isTripEssential && contextInfo.context === 'college_trip') return true;
+          return false;
+        });
+
+        const catalogToSend = (relevantProducts.length >= 6 ? relevantProducts : allAvailableProducts).slice(0, 18);
+
+        const prompt = `You are CampusCart AI's Student Context Engine for college students.
 A student requested: "${query}".
 Budget: ₹${targetBudget}.
 Context detected: ${contextInfo.contextTitle} (${contextInfo.contextDescription}).
 
 Available catalog of products currently in the database:
 ${JSON.stringify(
-  allAvailableProducts.map(p => ({
+  catalogToSend.map(p => ({
     id: p.id,
     name: p.name,
     category: p.categoryName,
     price: p.price,
-    stock: p.stock,
-    tags: p.tags
+    stock: p.stock
   }))
 )}
 
@@ -171,37 +184,60 @@ Return JSON in this format:
   ]
 }`;
 
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('Gemini API call timed out after 5s')), 5000);
-      });
+        // Attempt generation with 10s timeout
+        const callModel = async (modelName: string) => {
+          const timeoutPromise = new Promise<never>((_, reject) => {
+            setTimeout(() => reject(new Error('AI request timeout')), 10000);
+          });
 
-      const generatePromise = client.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          temperature: 0.2
+          const generatePromise = client.models.generateContent({
+            model: modelName,
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json',
+              temperature: 0.2,
+              maxOutputTokens: 1200
+            }
+          });
+
+          return Promise.race([generatePromise, timeoutPromise]);
+        };
+
+        let response: any = null;
+        try {
+          response = await callModel('gemini-3.8-flash');
+        } catch (_firstErr) {
+          // If gemini-3.8-flash is experiencing temporary demand spikes, try gemini-3.6-flash
+          try {
+            response = await callModel('gemini-3.6-flash');
+          } catch (_secondErr) {
+            response = null;
+          }
         }
-      });
 
-      const response = await Promise.race([generatePromise, timeoutPromise]);
-
-      const responseText = response.text || '{}';
-      const parsed = JSON.parse(responseText);
-      if (Array.isArray(parsed.items) && parsed.items.length > 0) {
-        aiMatchedProductIds = parsed.items.filter((item: any) =>
-          allAvailableProducts.some(p => p.id === item.productId)
-        );
+        if (response && response.text) {
+          let responseText = response.text.trim();
+          if (responseText.startsWith('```')) {
+            responseText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
+          }
+          const parsed = JSON.parse(responseText);
+          if (Array.isArray(parsed.items) && parsed.items.length > 0) {
+            aiMatchedProductIds = parsed.items.filter((item: any) =>
+              allAvailableProducts.some(p => p.id === item.productId)
+            );
+          }
+        }
+      } catch (_err) {
+        // AI service temporarily busy or unavailable; fallback is safely activated below
+        usedFallback = true;
       }
-    } catch (err) {
-      console.warn('Gemini API call fell back to deterministic student context engine:', err);
     }
-  }
 
-  // Fallback / Deterministic assembly if AI was unavailable, timed out, or produced empty
-  if (aiMatchedProductIds.length === 0) {
-    aiMatchedProductIds = buildDeterministicKit(contextInfo.context, allAvailableProducts);
-  }
+    // Fallback / Deterministic assembly if AI was unavailable, timed out, or produced empty
+    if (aiMatchedProductIds.length === 0) {
+      usedFallback = true;
+      aiMatchedProductIds = buildDeterministicKit(contextInfo.context, allAvailableProducts);
+    }
 
   // Build recommendation list with actual products from database
   let recommendations: AIProductRecommendation[] = [];
@@ -286,23 +322,23 @@ Return JSON in this format:
     }
   }
 
-  return {
-    context: contextInfo.context,
-    contextTitle: contextInfo.contextTitle,
-    contextDescription: contextInfo.contextDescription,
-    detectedBudget: targetBudget,
-    recommendations,
-    originalTotal,
-    discountTotal,
-    deliveryFee,
-    finalTotal,
-    isWithinBudget,
-    budgetMessage,
-    suggestedAdjustments: suggestedAdjustments.length > 0 ? suggestedAdjustments : undefined,
-    isFallback: !client
-  };
+    return {
+      context: contextInfo.context,
+      contextTitle: contextInfo.contextTitle,
+      contextDescription: contextInfo.contextDescription,
+      detectedBudget: targetBudget,
+      recommendations,
+      originalTotal,
+      discountTotal,
+      deliveryFee,
+      finalTotal,
+      isWithinBudget,
+      budgetMessage,
+      suggestedAdjustments: suggestedAdjustments.length > 0 ? suggestedAdjustments : undefined,
+      isFallback: usedFallback
+    };
   } catch (error) {
-    console.error('Safe fallback triggered in generateStudentKitRecommendation:', error);
+    console.info('Safe fallback engine activated for student context:', contextInfo.contextTitle);
     const fallbackIds = buildDeterministicKit(contextInfo.context, allAvailableProducts);
     const recs: AIProductRecommendation[] = [];
     let sub = 0;

@@ -1,4 +1,4 @@
-import { Product } from '../src/types.ts';
+import type { Product } from '../src/types.ts';
 
 export const INITIAL_PRODUCTS: Product[] = [
   // 1. College Essentials (Stationery & Study)
